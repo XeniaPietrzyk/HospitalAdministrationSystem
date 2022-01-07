@@ -7,9 +7,9 @@ namespace Model.Service
 {  
     public class PhysicianController
     {
-        private readonly IPhysicianConfiguration _adminConfiguration;
+        private readonly IEmployeeConfiguration<Physician> _adminConfiguration;
         private readonly Context _context;
-        public PhysicianController(IPhysicianConfiguration employeeConfiguration, Context context)
+        public PhysicianController(IEmployeeConfiguration<Physician> employeeConfiguration, Context context)
         {
             _adminConfiguration = employeeConfiguration;
             _context = context;

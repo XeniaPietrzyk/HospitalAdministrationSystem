@@ -7,16 +7,16 @@ namespace Model.Service
 {  
     public class AdminController
     {
-        private readonly IPhysicianConfiguration _adminConfiguration;
+        private readonly IEmployeeConfiguration<Admin> _adminConfiguration;
         private readonly Context _context;
-        public AdminController(IPhysicianConfiguration employeeConfiguration, Context context)
+        public AdminController(IEmployeeConfiguration<Admin> employeeConfiguration, Context context)
         {
             _adminConfiguration = employeeConfiguration;
             _context = context;
         }
 
 
-        public List<Physician> Add(Physician admin)
+        public List<Admin> Add(Admin admin)
         {
             try
             {
@@ -42,17 +42,17 @@ namespace Model.Service
             }
         }
 
-        public IQueryable<Physician> GetEmployees() => _adminConfiguration.GetAll(_context);
+        public IQueryable<Admin> GetEmployees() => _adminConfiguration.GetAll(_context);
 
-        public Physician Get(int id)
+        public Admin Get(int id)
         {
-            var result = new Physician();
+            var result = new Admin();
             return result;
         }
 
-        public Physician Update(int id)
+        public Admin Update(int id)
         {
-            var result = new Physician();
+            var result = new Admin();
             return result;
         }
     }

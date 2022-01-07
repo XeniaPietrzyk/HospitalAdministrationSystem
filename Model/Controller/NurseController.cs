@@ -7,16 +7,16 @@ namespace Model.Service
 {  
     public class NurseController
     {
-        private readonly INurseConfiguration _nurseConfiguration;
+        private readonly IEmployeeConfiguration<Nurse> _nurseConfiguration;
         private readonly Context _context;
-        public NurseController(INurseConfiguration employeeConfiguration, Context context)
+        public NurseController(IEmployeeConfiguration<Nurse> employeeConfiguration, Context context)
         {
             _nurseConfiguration = employeeConfiguration;
             _context = context;
         }
 
 
-        public List<Physician> Add(Physician nurse)
+        public List<Nurse> Add(Nurse nurse)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace Model.Service
         {
             try
             {
-                var admin = _nurseConfiguration.FindFirstByCondition(id, _context);
+                var nurse = _nurseConfiguration.FindFirstByCondition(id, _context);
                 _nurseConfiguration.Delete(id, _context);
             }
             catch (Exception)
@@ -42,17 +42,17 @@ namespace Model.Service
             }
         }
 
-        public IQueryable<Physician> GetEmployees() => _nurseConfiguration.GetAll(_context);
+        public IQueryable<Nurse> GetEmployees() => _nurseConfiguration.GetAll(_context);
 
-        public Physician Get(int id)
+        public Nurse Get(int id)
         {
-            var result = new Physician();
+            var result = new Nurse();
             return result;
         }
 
-        public Physician Update(int id)
+        public Nurse Update(int id)
         {
-            var result = new Physician();
+            var result = new Nurse();
             return result;
         }
     }

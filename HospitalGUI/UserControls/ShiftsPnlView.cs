@@ -2,6 +2,7 @@
 using Model.Controller;
 using Model.Model;
 using Model.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -12,6 +13,7 @@ namespace HospitalGUI.UserControls
     {
         private IEmployeeConfiguration<Nurse> _nurseConfiguration;
         private IEmployeeConfiguration<Physician> _physicianConfiguration;
+        private IEmployeeConfiguration<Duty> _dutyConfiguration;
 
         public ShiftsPnlView()
         {
@@ -27,7 +29,7 @@ namespace HospitalGUI.UserControls
 
         private void InitializeShiftsGrid()
         {
-
+            
         }
 
         public List<Shift> GetAllShifts()
@@ -42,6 +44,24 @@ namespace HospitalGUI.UserControls
         private void ShiftPnl_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void AddDutyBtn_Click(object sender, System.EventArgs e)
+        {
+            Duty duty = new Duty();
+            duty = setDutyTerm(duty);
+            _dutyConfiguration.Add(duty, _context);
+            DutyDataGrid.Refresh();
+        }
+
+        private Duty setDutyTerm(Duty duty)
+        {            
+            var day = Convert.ToInt32(DutyDayTbox.Text.ToString());
+            var month = Convert.ToInt32(DutyDayTbox.Text.ToString());
+            var year = Convert.ToInt32(DutyDayTbox.Text.ToString());
+            DateTime dutyDate = new DateTime(year, month, day);
+            duty.Term = dutyDate;
+            return duty;
         }
     }
 }

@@ -70,7 +70,7 @@ namespace Model.Controller
 
         private int GenerateId(Context context)
         {
-            var id = context.Admins.Count + 1;
+            var id = context.Admins.Count;
             return id;
         }
     }

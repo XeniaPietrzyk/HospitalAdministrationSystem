@@ -1,4 +1,5 @@
-﻿using Model.Model;
+﻿using Model.Helpers;
+using Model.Model;
 using Model.Service;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,22 @@ namespace Model.Controller
     {
         public List<Nurse> Add(Nurse entity, Context context)
         {
-            //Nurses = NurseService.Add(newNurse, context)
-            entity.Id = GenerateId(entity, context);
             List<Nurse> nurses = context.Nurses;
+            entity.Id = GenerateId(entity, context);            
+            List<Shift> nurseShift = entity.Shift;
+            if (nurseShift != null)
+            {
+                ConvertToMedic converter = new ConvertToMedic(entity);
+                Medic convertedMedic = converter.ConvertPhysician();
+                foreach (var item in nurseShift)
+                {
+                    item.Medic = convertedMedic;
+                }
+                entity.Shift = nurseShift;
+            }
+            else entity.Shift = new List<Shift>();            
+            AddShifts(entity.Shift, context);
             nurses.Add(entity);
-            AddShifts( entity.Shift, context);
             return nurses;
         }
 
@@ -65,7 +77,7 @@ namespace Model.Controller
 
         private int GenerateId(Nurse entity, Context context)
         {
-            var id = context.Nurses.Count + 1;
+            var id = context.Nurses.Count;
             return id;
         }
     }

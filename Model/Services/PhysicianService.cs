@@ -11,8 +11,7 @@ namespace Model.Controller
         public List<Physician> Add(Physician entity, Context context)
         {
             List<Physician> physicians = context.Physicians;
-            entity.Id = GenerateId(entity, context);
-            physicians.Add(entity);
+            entity.Id = GenerateId(entity, context);            
             List<Shift> physicianShift = entity.Shift;
             if (physicianShift != null)
             {
@@ -22,9 +21,11 @@ namespace Model.Controller
                 {
                     item.Medic = convertedMedic;
                 }
+                entity.Shift = physicianShift;
             }
-            entity.Shift = physicianShift;
+            else entity.Shift = new List<Shift>();
             AddShifts(entity.Shift, context);
+            physicians.Add(entity);
             return physicians;
         }
 
@@ -79,7 +80,7 @@ namespace Model.Controller
 
         private int GenerateId(Physician entity, Context context)
         {
-            var id = context.Physicians.Count + 1;
+            var id = context.Physicians.Count;
             return id;
         }
     }

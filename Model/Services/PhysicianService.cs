@@ -11,6 +11,7 @@ namespace Model.Controller
         public List<Physician> Add(Physician entity, Context context)
         {
             List<Physician> physicians = context.Physicians;
+            entity.Id = GenerateId(entity, context);
             physicians.Add(entity);
             List<Shift> physicianShift = entity.Shift;
             if (physicianShift != null)
@@ -27,10 +28,10 @@ namespace Model.Controller
             return physicians;
         }
 
-        public void Delete(Physician entity, Context context)
+        public void Delete(int id, Context context)
         {
             List<Physician> physicians = context.Physicians;
-            physicians.RemoveAt(entity.Id);
+            physicians.RemoveAt(id-1);
         }
 
         public Physician FindFirstByCondition(int id, Context context)
@@ -76,5 +77,10 @@ namespace Model.Controller
             return shifts;
         }
 
+        private int GenerateId(Physician entity, Context context)
+        {
+            var id = context.Physicians.Count + 1;
+            return id;
+        }
     }
 }

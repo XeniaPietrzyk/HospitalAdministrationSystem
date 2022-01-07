@@ -33,7 +33,7 @@ namespace Model.Service
             try
             {
                 var admin = _adminConfiguration.FindFirstByCondition(id, _context);
-                _adminConfiguration.Delete(admin, _context);
+                _adminConfiguration.Delete(id, _context);
             }
             catch (Exception)
             {

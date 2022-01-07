@@ -34,7 +34,7 @@ namespace Model.Service
             try
             {
                 var employee = _employeeConfiguration.FindFirstByCondition(id, _context);
-                _employeeConfiguration.Delete(employee, _context);
+                _employeeConfiguration.Delete(id, _context);
             }
             catch (Exception)
             {

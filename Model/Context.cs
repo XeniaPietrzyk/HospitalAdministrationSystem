@@ -14,6 +14,7 @@ namespace Model
             Admins = new List<Admin>();
             Nurses = new List<Nurse>();
             Physicians = new List<Physician>();
+            Duties = new List<Duty>();
             Shifts = new List<List<Shift>>();
             LoginPassword = new Dictionary<string, string>();
         }
@@ -22,6 +23,7 @@ namespace Model
         public List<Admin> Admins { get; set; }
         public List<Nurse> Nurses { get; set; }
         public List<Physician> Physicians { get; set; }
+        public List<Duty> Duties { get; set; }
         public List<List<Shift>> Shifts { get; set; }
         public Dictionary<string, string> LoginPassword { get; set; }
 

@@ -27,20 +27,7 @@ namespace HospitalGUI.UserControls
 
         private void InitializeShiftsGrid()
         {
-            // 
-            // ShiftsGrid
-            // 
-            this.ShiftsGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
-            this.ShiftsGrid.BorderStyle = BorderStyle.None;
-            this.ShiftsGrid.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(243)))), ((int)(((byte)(250)))));
-            this.ShiftsGrid.Location = new System.Drawing.Point(208, 12);
-            this.ShiftsGrid.Name = "ShiftsGrid";
-            this.ShiftsGrid.RowTemplate.Height = 25;
-            this.ShiftsGrid.Size = new System.Drawing.Size(670, 600);
-            this.ShiftsGrid.TabIndex = 1;
-            //TODO: rozszerzyc source o pracownikow
-            //powinno byc zbindowane pracownik + shift
-            this.ShiftsGrid.DataSource = GetAllShifts();
+
         }
 
         public List<Shift> GetAllShifts()
@@ -52,5 +39,9 @@ namespace HospitalGUI.UserControls
             return allShifts.ToList();
         }
 
+        private void ShiftPnl_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

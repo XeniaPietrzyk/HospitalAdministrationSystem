@@ -33,7 +33,9 @@ namespace HospitalGUI.UserControls
 
         private Employee _employee { get; set; }
         private Context _context { get; set; }
-        private IQueryable<Employee> employeeList { get; set; }
+        private IQueryable<Admin> adminsList { get; set; }
+        private IQueryable<Nurse> nurseList { get; set; }
+        private IQueryable<Physician> physicianList { get; set; }
 
         private string ActiveEmployee = "admin";
         private void InitializeEmployeeGrid()
@@ -98,25 +100,25 @@ namespace HospitalGUI.UserControls
             this.EmployeeGrid.Columns[6].Width = 80;
         }
 
-        private List<Employee> GetAdminList()
+        private List<Admin> GetAdminList()
         {
             _adminConfiguration = new AdminService();
-            employeeList = _adminConfiguration.GetAll(_context);
-            return employeeList.ToList();
+            adminsList = _adminConfiguration.GetAll(_context);
+            return adminsList.ToList();
         }
 
-        private List<Employee> GetPhysicianList()
+        private List<Physician> GetPhysicianList()
         {
             _physicianConfiguration = new PhysicianService();
-            employeeList = _physicianConfiguration.GetAll(_context);
-            return employeeList.ToList();
+            physicianList = _physicianConfiguration.GetAll(_context);
+            return physicianList.ToList();
         }
 
-        private List<Employee> GetNurseList()
+        private List<Nurse> GetNurseList()
         {
             _nurseConfiguration = new NurseService();
-            employeeList = _nurseConfiguration.GetAll(_context);
-            return employeeList.ToList();
+            nurseList = _nurseConfiguration.GetAll(_context);
+            return nurseList.ToList();
         }
 
         private void NurseGridViewBtn_Click(object sender, EventArgs e)
@@ -175,6 +177,7 @@ namespace HospitalGUI.UserControls
                         newAdmin.Sex = Model.Helpers.Sex.female;
                     }
                     else newAdmin.Sex = Model.Helpers.Sex.male;
+
                     if (permissionRow == "admin")
                     {
                         newAdmin.Permission = Model.Helpers.Permission.admin;
@@ -199,6 +202,7 @@ namespace HospitalGUI.UserControls
                         newNurse.Sex = Model.Helpers.Sex.female;
                     }
                     else newNurse.Sex = Model.Helpers.Sex.male;
+
                     if (permissionRow == "admin")
                     {
                         newNurse.Permission = Model.Helpers.Permission.admin;
@@ -209,6 +213,9 @@ namespace HospitalGUI.UserControls
                 }
                 if (ActiveEmployee == "Physician")
                 {
+                    var spec = EmployeeGrid.Rows[rowindex].Cells[8].Value.ToString();
+                    var pwzNumber = Convert.ToInt32(EmployeeGrid.Rows[rowindex].Cells[9].Value.ToString());
+
                     Physician newPhysician = new Physician()
                     {
                         Id = idRow,
@@ -216,22 +223,68 @@ namespace HospitalGUI.UserControls
                         Pesel = peselRow,
                         UserName = userNameRow,
                         Password = passwordRow,
+                        PWZNumber = pwzNumber
                     };
                     if (sexRow == "female")
                     {
                         newPhysician.Sex = Model.Helpers.Sex.female;
                     }
                     else newPhysician.Sex = Model.Helpers.Sex.male;
+
                     if (permissionRow == "admin")
                     {
                         newPhysician.Permission = Model.Helpers.Permission.admin;
                     }
                     else newPhysician.Permission = Model.Helpers.Permission.employee;
+                    
+                    if (spec == "cardiology")
+                    {
+                        newPhysician.Specialization = Model.Helpers.Specialization.cardiology;
+                    }
+                    else if (spec == "urology")
+                    {
+                        newPhysician.Specialization = Model.Helpers.Specialization.urology;
+                    }
+                    else if (spec == "neurology")
+                    {
+                        newPhysician.Specialization = Model.Helpers.Specialization.neurology;
+                    }
+                    else newPhysician.Specialization = Model.Helpers.Specialization.laryngology;
 
                     _physicianConfiguration.Update(newPhysician, _context);
                 }
             }
         }
 
+        private void DeleteBtn_Click(object sender, EventArgs e)
+        {
+            var rowindex = EmployeeGrid.CurrentCell.RowIndex;
+            var idRow = EmployeeGrid.Rows[rowindex].Cells["Id"].Value.ToString();
+            int id = Convert.ToInt32(idRow);
+            if (id != 0)
+            {
+                if (ActiveEmployee == "admin")
+                {
+                    _adminConfiguration.Delete(id, _context);
+                }
+                if (ActiveEmployee == "physician")
+                {
+                    _physicianConfiguration.Delete(id, _context);
+                }
+                if (ActiveEmployee == "nurse")
+                {
+                    _nurseConfiguration.Delete(id, _context);
+                }
+            }
+            else
+            {
+                string message = "Nie można usunąć użytkownika o id = 0";
+                string caption = "Error Detected in Input";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+                result = MessageBox.Show(message, caption, buttons);
+            }
+            
+        }
     }
 }

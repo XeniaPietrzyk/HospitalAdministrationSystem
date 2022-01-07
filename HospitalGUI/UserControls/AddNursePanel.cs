@@ -18,7 +18,7 @@ namespace HospitalGUI.UserControls
         private TextBox NameTbx;
         private ComboBox SexCbox;
         private ComboBox PermissionCbox;
-        private Button AddAdminBtn;
+        private Button AddNurseBtn;
         private Context _context;
 
         public AddNursePanel()
@@ -38,7 +38,7 @@ namespace HospitalGUI.UserControls
             this.UserNameTbx = new System.Windows.Forms.TextBox();
             this.PeselTxb = new System.Windows.Forms.TextBox();
             this.NameTbx = new System.Windows.Forms.TextBox();
-            this.AddAdminBtn = new System.Windows.Forms.Button();
+            this.AddNurseBtn = new System.Windows.Forms.Button();
             this.SexCbox = new System.Windows.Forms.ComboBox();
             this.PermissionCbox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
@@ -75,19 +75,19 @@ namespace HospitalGUI.UserControls
             this.NameTbx.Size = new System.Drawing.Size(180, 23);
             this.NameTbx.TabIndex = 10;
             // 
-            // AddAdminBtn
+            // AddNurseBtn
             // 
-            this.AddAdminBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(239)))), ((int)(((byte)(252)))));
-            this.AddAdminBtn.FlatAppearance.BorderSize = 0;
-            this.AddAdminBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddAdminBtn.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.AddAdminBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(71)))), ((int)(((byte)(139)))));
-            this.AddAdminBtn.Location = new System.Drawing.Point(475, 112);
-            this.AddAdminBtn.Name = "AddAdminBtn";
-            this.AddAdminBtn.Size = new System.Drawing.Size(90, 30);
-            this.AddAdminBtn.TabIndex = 9;
-            this.AddAdminBtn.Text = "Dodaj ";
-            this.AddAdminBtn.UseVisualStyleBackColor = false;
+            this.AddNurseBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(239)))), ((int)(((byte)(252)))));
+            this.AddNurseBtn.FlatAppearance.BorderSize = 0;
+            this.AddNurseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AddNurseBtn.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.AddNurseBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(71)))), ((int)(((byte)(139)))));
+            this.AddNurseBtn.Location = new System.Drawing.Point(475, 112);
+            this.AddNurseBtn.Name = "AddNurseBtn";
+            this.AddNurseBtn.Size = new System.Drawing.Size(90, 30);
+            this.AddNurseBtn.TabIndex = 9;
+            this.AddNurseBtn.Text = "Dodaj ";
+            this.AddNurseBtn.UseVisualStyleBackColor = false;
             // 
             // SexCbox
             // 
@@ -98,7 +98,6 @@ namespace HospitalGUI.UserControls
             this.SexCbox.TabIndex = 19;
             this.SexCbox.DataSource = Sex.GetValues(typeof(Sex));
             //this.SexCbox.DataSource = Sex.GetValues(typeof(Sex));
-
             // 
             // PermissionCbox
             // 
@@ -108,9 +107,6 @@ namespace HospitalGUI.UserControls
             this.PermissionCbox.Size = new System.Drawing.Size(121, 23);
             this.PermissionCbox.TabIndex = 21;
             this.PermissionCbox.DataSource = Permission.GetValues(typeof(Permission));
-            //this.PermissionCbox.DataSource = Permission.GetValues(typeof(Permission));
-
-
             // 
             // AddNursePanel
             // 
@@ -121,7 +117,7 @@ namespace HospitalGUI.UserControls
             this.Controls.Add(this.UserNameTbx);
             this.Controls.Add(this.PeselTxb);
             this.Controls.Add(this.NameTbx);
-            this.Controls.Add(this.AddAdminBtn);
+            this.Controls.Add(this.AddNurseBtn);
             this.Name = "AddNursePanel";
             this.Size = new System.Drawing.Size(610, 155);
             this.ResumeLayout(false);
@@ -129,7 +125,7 @@ namespace HospitalGUI.UserControls
 
         }
 
-        private void AddAdminBtn_Click(object sender, EventArgs e)
+        private void AddNurseBtn_Click(object sender, EventArgs e)
         {
             Nurse newNurse = new Nurse();
             newNurse.Name = NameTbx.Text;

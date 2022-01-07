@@ -10,16 +10,18 @@ namespace Model.Controller
         public List<Nurse> Add(Nurse entity, Context context)
         {
             //Nurses = NurseService.Add(newNurse, context)
+            entity.Id = GenerateId(entity, context);
             List<Nurse> nurses = context.Nurses;
             nurses.Add(entity);
             AddShifts( entity.Shift, context);
             return nurses;
         }
 
-        public void Delete(Nurse entity, Context context)
+        public void Delete(int id, Context context)
         {
+            
             List<Nurse> nurse = context.Nurses;
-            nurse.RemoveAt(entity.Id);
+            nurse.RemoveAt(id-1);
         }
 
 
@@ -61,5 +63,10 @@ namespace Model.Controller
             return shifts;
         }
 
+        private int GenerateId(Nurse entity, Context context)
+        {
+            var id = context.Nurses.Count + 1;
+            return id;
+        }
     }
 }

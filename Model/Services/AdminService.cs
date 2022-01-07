@@ -28,6 +28,7 @@ namespace Model.Controller
         public List<Admin> Add(Admin entity, Context context)
         {
             List<Admin> admin = context.Admins;
+            entity.Id = GenerateId( context);
             admin.Add(entity);
             return admin;
 
@@ -41,10 +42,10 @@ namespace Model.Controller
             return admin;
         }
 
-        public void Delete(Admin entity, Context context)
+        public void Delete(int id, Context context)
         {
             List<Admin> admin = context.Admins;
-            admin.RemoveAt(entity.Id);
+            admin.RemoveAt(id-1);
         }
 
         public void AddShift(Admin entity, Shift shift, Context context)
@@ -65,6 +66,12 @@ namespace Model.Controller
         public List<Shift> GetShift(Admin entity, Shift shift, Context context)
         {
             throw new System.NotImplementedException();
+        }
+
+        private int GenerateId(Context context)
+        {
+            var id = context.Admins.Count + 1;
+            return id;
         }
     }
 }

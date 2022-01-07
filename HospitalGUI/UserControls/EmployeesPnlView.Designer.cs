@@ -72,6 +72,7 @@ namespace HospitalGUI.UserControls
             this.DeleteBtn.TabIndex = 5;
             this.DeleteBtn.Text = "Usuń";
             this.DeleteBtn.UseVisualStyleBackColor = false;
+            this.DeleteBtn.Click += new System.EventHandler(this.DeleteBtn_Click);
             // 
             // UpdateBtn
             // 
@@ -134,26 +135,26 @@ namespace HospitalGUI.UserControls
             this.NurseGridViewBtn.UseVisualStyleBackColor = true;
             this.NurseGridViewBtn.Click += new System.EventHandler(this.NurseGridViewBtn_Click);
             // 
-            // addAdminPanel2
+            // addAdminPanel1
             // 
             this.addAdminPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
-            this.addAdminPanel1.Location = new System.Drawing.Point(8, 130);
+            this.addAdminPanel1.Location = new System.Drawing.Point(5, 136);
             this.addAdminPanel1.Name = "addAdminPanel1";
             this.addAdminPanel1.Size = new System.Drawing.Size(610, 155);
             this.addAdminPanel1.TabIndex = 6;
-            // a
-            // addNursePanel2
+            // 
+            // addNursePanel1
             // 
             this.addNursePanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
-            this.addNursePanel1.Location = new System.Drawing.Point(8, 130);
+            this.addNursePanel1.Location = new System.Drawing.Point(5, 136);
             this.addNursePanel1.Name = "addNursePanel1";
             this.addNursePanel1.Size = new System.Drawing.Size(610, 155);
             this.addNursePanel1.TabIndex = 7;
             // 
-            // addPhysicianPanel2
+            // addPhysicianPanel1
             // 
             this.addPhysicianPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
-            this.addPhysicianPanel1.Location = new System.Drawing.Point(8, 130);
+            this.addPhysicianPanel1.Location = new System.Drawing.Point(5, 145);
             this.addPhysicianPanel1.Name = "addPhysicianPanel1";
             this.addPhysicianPanel1.Size = new System.Drawing.Size(610, 155);
             this.addPhysicianPanel1.TabIndex = 8;

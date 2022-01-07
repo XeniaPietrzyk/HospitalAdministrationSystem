@@ -20,9 +20,6 @@ namespace HospitalGUI
 
     // dodaj/usuń/edytuj dyżur
 
-    //lista pracowników
-    //dodaj, usuń, edytuj pracownika
-
     public partial class MainView : Form
     {
         private IEmployeeConfiguration<Admin> _adminConfiguration;
@@ -105,7 +102,7 @@ namespace HospitalGUI
             NavEmplBtn.BackColor = Color.FromArgb(235, 243, 250);
             if (GetEmployeeType(_employee) == "Admin")
             {
-                                
+                //TODO: widok wszystkich dyzurow i zmian, wszystkich pracownikow                
             }
             //ShiftsPnlView.Show();
             employeesPnlView1.Hide();

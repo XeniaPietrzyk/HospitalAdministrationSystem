@@ -16,12 +16,24 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Update="UserControls\AddAdminPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UserControls\AddPhysicianPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="UserControls\AddPhysicianPanel - Copy - Copy.resx">
+      <DependentUpon>AddPhysicianPanel - Copy.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="UserControls\AddPhysicianPanel - Copy.resx">
+      <DependentUpon>AddPhysicianPanel.resx</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
 

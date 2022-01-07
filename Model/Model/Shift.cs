@@ -7,6 +7,6 @@ namespace Model.Model
     {
         public int Id { get; set; }
         public DateTime ShiftDate { get; set; }
-        public List<Medic> Medic { get; set; }
+        public Medic Medic { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Model.Model;
+﻿using Model.Helpers;
+using Model.Model;
 using Model.Service;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,19 @@ namespace Model.Controller
         {
             List<Physician> physicians = context.Physicians;
             physicians.Add(entity);
-            AddShift(entity.Shift, context);
+            List<Shift> physicianShift = entity.Shift;
+            if (physicianShift != null)
+            {
+                ConvertToMedic converter = new ConvertToMedic(entity);
+                Medic convertedMedic = converter.ConvertPhysician();
+                foreach (var item in physicianShift)
+                {
+                    item.Medic = convertedMedic;
+                }
+            }
+            entity.Shift = physicianShift;
+            AddShifts(entity.Shift, context);
             return physicians;
-
         }
 
         public void Delete(Physician entity, Context context)
@@ -47,9 +58,9 @@ namespace Model.Controller
             return physicians;
         }
 
-        public void AddShift(List<Shift> shift, Context context)
+        public void AddShifts(List<Shift> shifts, Context context)
         {
-            context.Shifts.Add(shift);
+            context.Shifts.Add(shifts);
         }
 
         public List<Shift> GetShift(Context context)
@@ -64,5 +75,6 @@ namespace Model.Controller
             }
             return shifts;
         }
+
     }
 }

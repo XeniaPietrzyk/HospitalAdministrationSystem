@@ -12,7 +12,7 @@ namespace Model.Controller
             //Nurses = NurseService.Add(newNurse, context)
             List<Nurse> nurses = context.Nurses;
             nurses.Add(entity);
-            AddShift(entity.Shift, context);
+            AddShifts( entity.Shift, context);
             return nurses;
         }
 
@@ -43,9 +43,9 @@ namespace Model.Controller
             return nurse;
         }
 
-        public void AddShift(List<Shift> shift, Context context)
+        public void AddShifts(List<Shift> shifts, Context context)
         {
-            context.Shifts.Add(shift);
+            context.Shifts.Add(shifts);
         }
 
         public List<Shift> GetShift(Context context)

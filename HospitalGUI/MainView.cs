@@ -1,5 +1,6 @@
 ﻿//icons: <a href='https://www.freepik.com/vectors/icons'>Icons vector created by macrovector - www.freepik.com</a>
 
+using HospitalGUI.UserControls;
 using Model;
 using Model.Controller;
 using Model.Model;
@@ -35,10 +36,9 @@ namespace HospitalGUI
             if (GetEmployeeType(employee) == "Admin")
             {
                 InitializeAdminComponent();
-                InitializeEmployeeGrid();
-                EmployeeGrid.Hide();
+                employeesPnlView1.Hide();
             }
-            InitializeShiftsGrid();
+            //InitializeShiftsGrid();
             SetPositionIcon(employee);
 
             NavMarkPnl.Height = NavShiftsBtn.Height;
@@ -46,14 +46,12 @@ namespace HospitalGUI
             NavMarkPnl.Left = NavShiftsBtn.Left;
             NavShiftsBtn.BackColor = Color.FromArgb(248, 252, 255);
 
-            EmployeesPnl.Hide();
-
             PositionLbl.Text = GetEmployeeType(employee);
             NameLbl.Text = employee.Name;
         }
 
         private Employee _employee { get; set; }
-        private Context _context { get; set; }        
+        private readonly Context _context;      
         private IQueryable<Employee> employeeList { get; set; }
 
         public string GetEmployeeType(Employee employee)
@@ -107,9 +105,8 @@ namespace HospitalGUI
             if (GetEmployeeType(_employee) == "Admin")
             {
                 EmployeeGrid.Hide();
-                EmployeesPnl.Hide();
             }
-            ShiftsGrid.Show();
+            //ShiftsPnlView.Show();
         }
 
         private void NavEmplBtn_Click(object sender, System.EventArgs e)
@@ -119,13 +116,13 @@ namespace HospitalGUI
             NavMarkPnl.Left = NavEmplBtn.Left;
             NavEmplBtn.BackColor = Color.FromArgb(248, 252, 255);
             NavShiftsBtn.BackColor = Color.FromArgb(235, 243, 250);
-            ShiftsGrid.Hide();
-            GetAdminList();
-            GetPhysicianList();
-            GetNurseList();
-            InitializeEmployeeGrid();
-            EmployeeGrid.Show();
-            EmployeesPnl.Show();
+            //ShiftsPnlView.Hide();
+            //GetAdminList();
+            //GetPhysicianList();
+            //GetNurseList();
+            employeesPnlView1.Show();
+
+            //EmployeeGrid.Show();
         }
 
         private List<Employee> GetAdminList()

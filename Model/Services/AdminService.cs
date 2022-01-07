@@ -47,12 +47,22 @@ namespace Model.Controller
             admin.RemoveAt(entity.Id);
         }
 
-        public void AddShift(List<Shift> shift, Context context)
+        public void AddShift(Admin entity, Shift shift, Context context)
         {
             throw new System.NotImplementedException();
         }
 
         public List<Shift> GetShift(Context context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void AddShifts(List<Shift> shifts, Context context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public List<Shift> GetShift(Admin entity, Shift shift, Context context)
         {
             throw new System.NotImplementedException();
         }

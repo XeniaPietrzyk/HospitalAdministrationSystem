@@ -141,5 +141,12 @@ namespace HospitalGUI.UserControls
             addNursePanel1.Hide();
             addAdminPanel1.Show();
         }
+
+        private void UpdateBtn_Click(object sender, EventArgs e)
+        {
+            var updateEmployee = EmployeeGrid.SelectedRows;
+
+        }
+
     }
 }

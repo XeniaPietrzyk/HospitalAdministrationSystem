@@ -1,68 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Model;
+using Model.Controller;
+using Model.Helpers;
+using Model.Model;
+using Model.Service;
+using System;
 using System.Windows.Forms;
 
 namespace HospitalGUI.UserControls
 {
     public partial class AddPhysicianPanel : UserControl
     {
+        private IEmployeeConfiguration<Physician> _physicianConfiguration;
+
         private TextBox PWZNumbTbx;
-        private TextBox SpecTbx;
-        private TextBox PermissionTbx;
         private TextBox PasswordTbx;
         private TextBox UserNameTbx;
-        private TextBox SexTxb;
         private TextBox PeselTxb;
         private TextBox NameTbx;
-        private Button AddAdminBtn;
-
+        private Button AddPhysBtn;
+        private ComboBox SexCbox;
+        private ComboBox SpecCbox;
+        private ComboBox PermissionCbox;
+        private Context _context;
         public AddPhysicianPanel()
         {
+            InitializeComponent();
+        }
+
+        public AddPhysicianPanel(Context context)
+        {
+            _context = context;
             InitializeComponent();
         }
 
         private void InitializeComponent()
         {
             this.PWZNumbTbx = new System.Windows.Forms.TextBox();
-            this.SpecTbx = new System.Windows.Forms.TextBox();
-            this.PermissionTbx = new System.Windows.Forms.TextBox();
             this.PasswordTbx = new System.Windows.Forms.TextBox();
             this.UserNameTbx = new System.Windows.Forms.TextBox();
-            this.SexTxb = new System.Windows.Forms.TextBox();
             this.PeselTxb = new System.Windows.Forms.TextBox();
             this.NameTbx = new System.Windows.Forms.TextBox();
-            this.AddAdminBtn = new System.Windows.Forms.Button();
+            this.AddPhysBtn = new System.Windows.Forms.Button();
+            this.SexCbox = new System.Windows.Forms.ComboBox();
+            this.SpecCbox = new System.Windows.Forms.ComboBox();
+            this.PermissionCbox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // PWZNumbTbx
             // 
-            this.PWZNumbTbx.Location = new System.Drawing.Point(459, 66);
+            this.PWZNumbTbx.Location = new System.Drawing.Point(272, 66);
             this.PWZNumbTbx.Name = "PWZNumbTbx";
             this.PWZNumbTbx.PlaceholderText = "Numer PWZ";
             this.PWZNumbTbx.Size = new System.Drawing.Size(120, 23);
             this.PWZNumbTbx.TabIndex = 17;
-            // 
-            // SpecTbx
-            // 
-            this.SpecTbx.Location = new System.Drawing.Point(272, 66);
-            this.SpecTbx.Name = "SpecTbx";
-            this.SpecTbx.PlaceholderText = "Specjalizacja";
-            this.SpecTbx.Size = new System.Drawing.Size(120, 23);
-            this.SpecTbx.TabIndex = 16;
-            // 
-            // PermissionTbx
-            // 
-            this.PermissionTbx.Location = new System.Drawing.Point(29, 66);
-            this.PermissionTbx.Name = "PermissionTbx";
-            this.PermissionTbx.PlaceholderText = "Uprawnienia";
-            this.PermissionTbx.Size = new System.Drawing.Size(100, 23);
-            this.PermissionTbx.TabIndex = 15;
             // 
             // PasswordTbx
             // 
@@ -80,14 +70,6 @@ namespace HospitalGUI.UserControls
             this.UserNameTbx.Size = new System.Drawing.Size(180, 23);
             this.UserNameTbx.TabIndex = 13;
             // 
-            // SexTxb
-            // 
-            this.SexTxb.Location = new System.Drawing.Point(459, 20);
-            this.SexTxb.Name = "SexTxb";
-            this.SexTxb.PlaceholderText = "Płeć";
-            this.SexTxb.Size = new System.Drawing.Size(120, 23);
-            this.SexTxb.TabIndex = 12;
-            // 
             // PeselTxb
             // 
             this.PeselTxb.Location = new System.Drawing.Point(272, 20);
@@ -104,37 +86,81 @@ namespace HospitalGUI.UserControls
             this.NameTbx.Size = new System.Drawing.Size(180, 23);
             this.NameTbx.TabIndex = 10;
             // 
-            // AddAdminBtn
+            // AddPhysBtn
             // 
-            this.AddAdminBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(239)))), ((int)(((byte)(252)))));
-            this.AddAdminBtn.FlatAppearance.BorderSize = 0;
-            this.AddAdminBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddAdminBtn.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.AddAdminBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(71)))), ((int)(((byte)(139)))));
-            this.AddAdminBtn.Location = new System.Drawing.Point(475, 112);
-            this.AddAdminBtn.Name = "AddAdminBtn";
-            this.AddAdminBtn.Size = new System.Drawing.Size(90, 30);
-            this.AddAdminBtn.TabIndex = 9;
-            this.AddAdminBtn.Text = "Dodaj ";
-            this.AddAdminBtn.UseVisualStyleBackColor = false;
+            this.AddPhysBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(239)))), ((int)(((byte)(252)))));
+            this.AddPhysBtn.FlatAppearance.BorderSize = 0;
+            this.AddPhysBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AddPhysBtn.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.AddPhysBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(71)))), ((int)(((byte)(139)))));
+            this.AddPhysBtn.Location = new System.Drawing.Point(475, 112);
+            this.AddPhysBtn.Name = "AddPhysBtn";
+            this.AddPhysBtn.Size = new System.Drawing.Size(90, 30);
+            this.AddPhysBtn.TabIndex = 9;
+            this.AddPhysBtn.Text = "Dodaj ";
+            this.AddPhysBtn.UseVisualStyleBackColor = false;
+            this.AddPhysBtn.Click += new System.EventHandler(this.AddAdminBtn_Click);
             // 
-            // AddAdminPanel
+            // SexCbox
+            // 
+            this.SexCbox.FormattingEnabled = true;
+            this.SexCbox.Location = new System.Drawing.Point(459, 20);
+            this.SexCbox.Name = "SexCbox";
+            this.SexCbox.Size = new System.Drawing.Size(121, 23);
+            this.SexCbox.TabIndex = 18;
+            this.SexCbox.DataSource = Sex.GetValues(typeof(Sex));
+            // 
+            // SpecCbox
+            // 
+            this.SpecCbox.FormattingEnabled = true;
+            this.SpecCbox.Location = new System.Drawing.Point(29, 66);
+            this.SpecCbox.Name = "SpecCbox";
+            this.SpecCbox.Size = new System.Drawing.Size(180, 23);
+            this.SpecCbox.TabIndex = 19;
+            this.SpecCbox.DataSource = Specialization.GetValues(typeof(Specialization));
+            // 
+            // PermissionCbox
+            // 
+            this.PermissionCbox.FormattingEnabled = true;
+            this.PermissionCbox.Location = new System.Drawing.Point(459, 66);
+            this.PermissionCbox.Name = "PermissionCbox";
+            this.PermissionCbox.Size = new System.Drawing.Size(121, 23);
+            this.PermissionCbox.TabIndex = 20;
+            this.PermissionCbox.DataSource = Permission.GetValues(typeof(Permission));
+            // 
+            // AddPhysicianPanel
             // 
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
+            this.Controls.Add(this.PermissionCbox);
+            this.Controls.Add(this.SpecCbox);
+            this.Controls.Add(this.SexCbox);
             this.Controls.Add(this.PWZNumbTbx);
-            this.Controls.Add(this.SpecTbx);
-            this.Controls.Add(this.PermissionTbx);
             this.Controls.Add(this.PasswordTbx);
             this.Controls.Add(this.UserNameTbx);
-            this.Controls.Add(this.SexTxb);
             this.Controls.Add(this.PeselTxb);
             this.Controls.Add(this.NameTbx);
-            this.Controls.Add(this.AddAdminBtn);
-            this.Name = "AddAdminPanel";
+            this.Controls.Add(this.AddPhysBtn);
+            this.Name = "AddPhysicianPanel";
             this.Size = new System.Drawing.Size(610, 155);
             this.ResumeLayout(false);
             this.PerformLayout();
 
+        }
+
+        private void AddAdminBtn_Click(object sender, EventArgs e)
+        {
+            Physician newPhysician = new Physician();
+            newPhysician.Name = NameTbx.Text;
+            newPhysician.Pesel = long.Parse(PeselTxb.Text);
+            newPhysician.Password = PasswordTbx.Text;
+            newPhysician.UserName = UserNameTbx.Text;
+            newPhysician.PWZNumber = Convert.ToInt32(PWZNumbTbx.Text);
+            newPhysician.Sex = (Sex)SexCbox.SelectedItem;
+            newPhysician.Permission = (Permission)PermissionCbox.SelectedItem;
+            newPhysician.Specialization = (Specialization)SpecCbox.SelectedItem;
+
+            _physicianConfiguration = new PhysicianService();
+            _physicianConfiguration.Add(newPhysician, _context);
         }
     }
 }

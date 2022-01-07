@@ -16,6 +16,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Update="UserControls\AddNursePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="UserControls\AddAdminPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

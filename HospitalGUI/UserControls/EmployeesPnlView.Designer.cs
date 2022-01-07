@@ -30,20 +30,22 @@ namespace HospitalGUI.UserControls
         private void InitializeComponent()
         {
             this.EmployeesPnl = new System.Windows.Forms.Panel();
-            this.addPhysicianPanel1 = new HospitalGUI.UserControls.AddPhysicianPanel();
+            this.addNursePanel1 = new HospitalGUI.UserControls.AddNursePanel(_context);
+            this.addAdminPanel1 = new HospitalGUI.UserControls.AddAdminPanel(_context);
             this.EmployeeGrid = new System.Windows.Forms.DataGridView();
             this.AdminGridViewBtn = new System.Windows.Forms.Button();
             this.PhysGridViewBtn = new System.Windows.Forms.Button();
             this.NurseGridViewBtn = new System.Windows.Forms.Button();
-            this.addAdminPanel1 = new HospitalGUI.UserControls.AddAdminPanel();
+            this.addPhysicianPanel1 = new HospitalGUI.UserControls.AddPhysicianPanel(_context);
             this.EmployeesPnl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EmployeeGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // EmployeesPnl
             // 
-            this.EmployeesPnl.Controls.Add(this.addAdminPanel1);
             this.EmployeesPnl.Controls.Add(this.addPhysicianPanel1);
+            this.EmployeesPnl.Controls.Add(this.addNursePanel1);
+            this.EmployeesPnl.Controls.Add(this.addAdminPanel1);
             this.EmployeesPnl.Controls.Add(this.EmployeeGrid);
             this.EmployeesPnl.Controls.Add(this.AdminGridViewBtn);
             this.EmployeesPnl.Controls.Add(this.PhysGridViewBtn);
@@ -53,13 +55,21 @@ namespace HospitalGUI.UserControls
             this.EmployeesPnl.Size = new System.Drawing.Size(615, 570);
             this.EmployeesPnl.TabIndex = 1;
             // 
-            // addPhysicianPanel1
+            // addNursePanel1
             // 
-            this.addPhysicianPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
-            this.addPhysicianPanel1.Location = new System.Drawing.Point(8, 136);
-            this.addPhysicianPanel1.Name = "addPhysicianPanel1";
-            this.addPhysicianPanel1.Size = new System.Drawing.Size(600, 155);
-            this.addPhysicianPanel1.TabIndex = 4;
+            this.addNursePanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
+            this.addNursePanel1.Location = new System.Drawing.Point(8, 135);
+            this.addNursePanel1.Name = "addNursePanel1";
+            this.addNursePanel1.Size = new System.Drawing.Size(600, 155);
+            this.addNursePanel1.TabIndex = 5;
+            // 
+            // addAdminPanel1
+            // 
+            this.addAdminPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
+            this.addAdminPanel1.Location = new System.Drawing.Point(8, 135);
+            this.addAdminPanel1.Name = "addAdminPanel1";
+            this.addAdminPanel1.Size = new System.Drawing.Size(600, 155);
+            this.addAdminPanel1.TabIndex = 4;
             // 
             // EmployeeGrid
             // 
@@ -108,13 +118,13 @@ namespace HospitalGUI.UserControls
             this.NurseGridViewBtn.UseVisualStyleBackColor = true;
             this.NurseGridViewBtn.Click += new System.EventHandler(this.NurseGridViewBtn_Click);
             // 
-            // addAdminPanel1
+            // addPhysicianPanel1
             // 
-            this.addAdminPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
-            this.addAdminPanel1.Location = new System.Drawing.Point(8, 136);
-            this.addAdminPanel1.Name = "addAdminPanel1";
-            this.addAdminPanel1.Size = new System.Drawing.Size(600, 155);
-            this.addAdminPanel1.TabIndex = 5;
+            this.addPhysicianPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
+            this.addPhysicianPanel1.Location = new System.Drawing.Point(8, 135);
+            this.addPhysicianPanel1.Name = "addPhysicianPanel1";
+            this.addPhysicianPanel1.Size = new System.Drawing.Size(600, 155);
+            this.addPhysicianPanel1.TabIndex = 6;
             // 
             // EmployeesPnlView
             // 
@@ -137,7 +147,8 @@ namespace HospitalGUI.UserControls
         private System.Windows.Forms.Button AdminGridViewBtn;
         private System.Windows.Forms.Button PhysGridViewBtn;
         private System.Windows.Forms.DataGridView EmployeeGrid;
-        private AddPhysicianPanel addPhysicianPanel1;
         private AddAdminPanel addAdminPanel1;
+        private AddNursePanel addNursePanel1;
+        private AddPhysicianPanel addPhysicianPanel1;
     }
 }

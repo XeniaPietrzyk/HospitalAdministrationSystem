@@ -27,6 +27,7 @@ namespace HospitalGUI.UserControls
             InitializeComponent();
             this.EmployeeGrid.DataSource = GetAdminList();
             addPhysicianPanel1.Hide();
+            addNursePanel1.Hide();
             addAdminPanel1.Show();
         }
 
@@ -121,20 +122,23 @@ namespace HospitalGUI.UserControls
         {
             EmployeeGrid.DataSource = GetNurseList();
             addAdminPanel1.Hide();
-            addPhysicianPanel1.Show();
+            addPhysicianPanel1.Hide();
+            addNursePanel1.Show();
         }
 
         private void PhysGridViewBtn_Click(object sender, EventArgs e)
         {
             EmployeeGrid.DataSource = GetPhysicianList();
-            addPhysicianPanel1.Show();
             addAdminPanel1.Hide();
+            addNursePanel1.Hide();
+            addPhysicianPanel1.Show();
         }
 
         private void AdminGridViewBtn_Click(object sender, EventArgs e)
         {
             EmployeeGrid.DataSource = GetAdminList();
             addPhysicianPanel1.Hide();
+            addNursePanel1.Hide();
             addAdminPanel1.Show();
         }
     }

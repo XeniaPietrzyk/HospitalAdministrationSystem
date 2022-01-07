@@ -36,10 +36,11 @@ namespace HospitalGUI
             if (GetEmployeeType(employee) == "Admin")
             {
                 InitializeAdminComponent();
-                employeesPnlView1.Hide();
             }
             //InitializeShiftsGrid();
-            SetPositionIcon(employee);
+            employeesPnlView1.Hide();
+            //TODO: czy to jest potrzebne?
+            SetPositionIcon(employee);            
 
             NavMarkPnl.Height = NavShiftsBtn.Height;
             NavMarkPnl.Top = NavShiftsBtn.Top;
@@ -85,11 +86,11 @@ namespace HospitalGUI
             {
                 pictureBox1.Image = global::HospitalGUI.Properties.Resources.Admin;
             }
-            if (employeePosition == "Nurse")
+            if (employeePosition == "Pielęgniarka" || employeePosition == "Pielęgniarz")
             {
                 pictureBox1.Image = global::HospitalGUI.Properties.Resources.Nurse;
             }
-            if (employeePosition == "Physician")
+            if (employeePosition == "Lekarz" || employeePosition == "Lekarka")
             {
                 pictureBox1.Image = global::HospitalGUI.Properties.Resources.Physician;
             }
@@ -104,9 +105,10 @@ namespace HospitalGUI
             NavEmplBtn.BackColor = Color.FromArgb(235, 243, 250);
             if (GetEmployeeType(_employee) == "Admin")
             {
-                EmployeeGrid.Hide();
+                                
             }
             //ShiftsPnlView.Show();
+            employeesPnlView1.Hide();
         }
 
         private void NavEmplBtn_Click(object sender, System.EventArgs e)
@@ -123,7 +125,7 @@ namespace HospitalGUI
             employeesPnlView1.Show();
 
             //EmployeeGrid.Show();
-        }
+         }
 
         private List<Employee> GetAdminList()
         {

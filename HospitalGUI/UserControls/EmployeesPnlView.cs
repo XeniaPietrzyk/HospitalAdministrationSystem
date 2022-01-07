@@ -27,6 +27,7 @@ namespace HospitalGUI.UserControls
             InitializeComponent();
             this.EmployeeGrid.DataSource = GetAdminList();
             addPhysicianPanel1.Hide();
+            addNursePanel1.Hide();
             addAdminPanel1.Show();
         }
 
@@ -34,6 +35,7 @@ namespace HospitalGUI.UserControls
         private Context _context { get; set; }
         private IQueryable<Employee> employeeList { get; set; }
 
+        private string ActiveEmployee = "admin";
         private void InitializeEmployeeGrid()
         {
             // 
@@ -119,23 +121,117 @@ namespace HospitalGUI.UserControls
 
         private void NurseGridViewBtn_Click(object sender, EventArgs e)
         {
+            ActiveEmployee = "nurse";
             EmployeeGrid.DataSource = GetNurseList();
             addAdminPanel1.Hide();
-            addPhysicianPanel1.Show();
+            addPhysicianPanel1.Hide();
+            addNursePanel1.Show();
         }
 
         private void PhysGridViewBtn_Click(object sender, EventArgs e)
         {
+            ActiveEmployee = "physician";
             EmployeeGrid.DataSource = GetPhysicianList();
-            addPhysicianPanel1.Show();
             addAdminPanel1.Hide();
+            addNursePanel1.Hide();
+            addPhysicianPanel1.Show();
         }
 
         private void AdminGridViewBtn_Click(object sender, EventArgs e)
         {
+            ActiveEmployee = "admin";
             EmployeeGrid.DataSource = GetAdminList();
             addPhysicianPanel1.Hide();
+            addNursePanel1.Hide();
             addAdminPanel1.Show();
         }
+
+        private void UpdateBtn_Click(object sender, EventArgs e)
+        {
+            if (EmployeeGrid.SelectedRows.Count == 1)
+            {
+                var rowindex = EmployeeGrid.CurrentCell.RowIndex;
+                var idRow = Convert.ToInt32(EmployeeGrid.Rows[rowindex].Cells[1].Value.ToString());
+                var nameRow = EmployeeGrid.Rows[rowindex].Cells[2].Value.ToString();
+                var peselRow = long.Parse(EmployeeGrid.Rows[rowindex].Cells[3].Value.ToString());
+                var sexRow = EmployeeGrid.Rows[rowindex].Cells[4].Value.ToString();
+                var userNameRow = EmployeeGrid.Rows[rowindex].Cells[5].Value.ToString();
+                var passwordRow = EmployeeGrid.Rows[rowindex].Cells[6].Value.ToString();
+                var permissionRow = EmployeeGrid.Rows[rowindex].Cells[7].Value.ToString();
+
+
+                if (ActiveEmployee == "Admin")
+                {
+                    Admin newAdmin = new Admin()
+                    {
+                        Id = idRow,
+                        Name = nameRow,
+                        Pesel = peselRow,
+                        UserName = userNameRow,
+                        Password = passwordRow,
+                    };
+                    if (sexRow == "female")
+                    {
+                        newAdmin.Sex = Model.Helpers.Sex.female;
+                    }
+                    else newAdmin.Sex = Model.Helpers.Sex.male;
+                    if (permissionRow == "admin")
+                    {
+                        newAdmin.Permission = Model.Helpers.Permission.admin;
+                    }
+                    else newAdmin.Permission = Model.Helpers.Permission.employee;
+
+                    _adminConfiguration.Update(newAdmin, _context);                
+                }
+
+                if (ActiveEmployee == "Nurse")
+                {
+                    Nurse newNurse = new Nurse() 
+                    {
+                        Id = idRow,
+                        Name = nameRow,
+                        Pesel = peselRow,
+                        UserName = userNameRow,
+                        Password = passwordRow,
+                    };
+                    if (sexRow == "female")
+                    {
+                        newNurse.Sex = Model.Helpers.Sex.female;
+                    }
+                    else newNurse.Sex = Model.Helpers.Sex.male;
+                    if (permissionRow == "admin")
+                    {
+                        newNurse.Permission = Model.Helpers.Permission.admin;
+                    }
+                    else newNurse.Permission = Model.Helpers.Permission.employee;
+
+                    _nurseConfiguration.Update(newNurse, _context);
+                }
+                if (ActiveEmployee == "Physician")
+                {
+                    Physician newPhysician = new Physician()
+                    {
+                        Id = idRow,
+                        Name = nameRow,
+                        Pesel = peselRow,
+                        UserName = userNameRow,
+                        Password = passwordRow,
+                    };
+                    if (sexRow == "female")
+                    {
+                        newPhysician.Sex = Model.Helpers.Sex.female;
+                    }
+                    else newPhysician.Sex = Model.Helpers.Sex.male;
+                    if (permissionRow == "admin")
+                    {
+                        newPhysician.Permission = Model.Helpers.Permission.admin;
+                    }
+                    else newPhysician.Permission = Model.Helpers.Permission.employee;
+
+                    _physicianConfiguration.Update(newPhysician, _context);
+                }
+            }
+        }
+
     }
 }

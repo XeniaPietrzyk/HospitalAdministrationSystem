@@ -11,7 +11,8 @@ namespace Model.Service
         List<T> Add(T entity, Context context);
         List<T> Update(T entity, Context context);
         void Delete(int id, Context context);
-        public void AddShifts(List<Shift> shifts, Context context);
+        public void AddShift(T entity, Shift shift, Context context);
+        public List<Shift> GetShifts(T entity, Context context);
         public List<Shift> GetShift( Context context);
     }
 }

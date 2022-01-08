@@ -14,6 +14,7 @@ namespace Model.Services
             entity.Id = GenerateId(context);
             entity.Shifts = new List<Shift>();
             duties.Add(entity);
+            context.Duties = duties;
             return duties;
         }
 
@@ -47,24 +48,26 @@ namespace Model.Services
             var id = context.Duties.Count + 1;
             return id;
         }
-
-        public void AddShifts(List<Shift> shifts, Context context)
-        {
-            context.Shifts.Add(shifts);
-        }
-
+        //nie potrzebuje pobierania wszystkich list zmian ze wszystkich duties
         public List<Shift> GetShift(Context context)
         {
-            List<Shift> shifts = new List<Shift>();
-            foreach (var item in context.Duties)
-            {
-                foreach (var singleShift in item.Shifts)
-                {
-                    shifts.Add(singleShift);
-                }
-            }
-            return shifts;
+            throw new System.NotImplementedException();
         }
 
+        public List<Shift> GetShifts(Duty duty, Context context)
+        {
+            List<Shift> dutyShifts = new List<Shift>();
+            foreach (var item in duty.Shifts)
+            {
+                dutyShifts.Add(item);
+            }
+            return dutyShifts;
+        }
+
+        public void AddShift(Duty entity, Shift shift, Context context)
+        {
+            //TODO: Duty addShift
+            throw new System.NotImplementedException();
+        }
     }
 }

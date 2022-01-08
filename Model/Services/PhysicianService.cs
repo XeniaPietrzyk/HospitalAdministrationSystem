@@ -11,22 +11,16 @@ namespace Model.Controller
     {
         public List<Physician> Add(Physician entity, Context context)
         {
+            //pobiera wszystkich lekarzy z bazy (plku xml)
             List<Physician> physicians = context.Physicians;
-            entity.Id = GenerateId(context);            
-            List<Shift> physicianShift = entity.Shift;
-            if (physicianShift != null)
-            {
-                ConvertToMedic converter = new ConvertToMedic(entity);
-                Medic convertedMedic = converter.ConvertPhysician();
-                foreach (var item in physicianShift)
-                {
-                    item.Medic = convertedMedic;
-                }
-                entity.Shift = physicianShift;
-            }
-            else entity.Shift = new List<Shift>();
-            AddShifts(entity.Shift, context);
+            //nadaje id nowemu lekarzowi
+            entity.Id = GenerateId(context);
+            entity.Shift = new List<Shift>();
+            //dodaje lekarza do listy lekarzy
             physicians.Add(entity);
+
+            //zwraca lekarza
+            //do przyszlych testow integracyjnych
             return physicians;
         }
 
@@ -43,6 +37,7 @@ namespace Model.Controller
             return physicians;
         }
 
+        //TODO: powielenie, do usuniecia
         public Physician Get(int id, Context context)
         {
             Physician physicians = context.Physicians.FirstOrDefault(x => x.Id == id);
@@ -56,15 +51,25 @@ namespace Model.Controller
 
         public List<Physician> Update(Physician entity, Context context)
         {
+            //pobiera z bazy wszystkich lekarzy
             List<Physician> physicians = context.Physicians;
+            //usuwa lekarza o entity.id
             physicians.RemoveAt(entity.Id);
+            //dodaje lekarza do listy wszystkich lekarzy
             physicians.Add(entity);
             return physicians;
         }
 
-        public void AddShifts(List<Shift> shifts, Context context)
+        public void AddShift(Physician entity, Shift shift, Context context)
         {
-            context.Shifts.Add(shifts);
+            //dodaje zmiane do listy zmian lekarza
+            entity.Shift.Add(shift);
+            //przypisuje lekarza (skonwertowanego do medyka) do zmiany
+            ConvertToMedic converter = new ConvertToMedic(entity);
+            Medic convertedMedic = converter.ConvertPhysician();
+            shift.Medic = convertedMedic;
+            //dodaje zmiane do listy wszystkich zmian
+            context.AllShifts.Add(shift);
         }
 
         public List<Shift> GetShift(Context context)
@@ -78,6 +83,11 @@ namespace Model.Controller
                 }
             }
             return shifts;
+        }
+
+        public List<Shift> GetShifts(Physician entity, Context context)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

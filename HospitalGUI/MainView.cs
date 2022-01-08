@@ -106,6 +106,7 @@ namespace HospitalGUI
             }
             //ShiftsPnlView.Show();
             employeesPnlView1.Hide();
+            shiftsPnlView1.Show();
         }
 
         private void NavEmplBtn_Click(object sender, System.EventArgs e)
@@ -115,13 +116,13 @@ namespace HospitalGUI
             NavMarkPnl.Left = NavEmplBtn.Left;
             NavEmplBtn.BackColor = Color.FromArgb(248, 252, 255);
             NavShiftsBtn.BackColor = Color.FromArgb(235, 243, 250);
-            //ShiftsPnlView.Hide();
             //GetAdminList();
             //GetPhysicianList();
             //GetNurseList();
+            shiftsPnlView1.Hide();
+            //TODO: to się zjebało
+            //trzeba bedzie dodac od nowa, gdy juz wszystkie UserG beda gotowe
             employeesPnlView1.Show();
-
-            //EmployeeGrid.Show();
          }
 
         private List<Employee> GetAdminList()

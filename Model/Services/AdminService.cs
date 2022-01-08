@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Model.Controller
 {
-    public class AdminService : Validate,IEmployeeConfiguration<Admin>
+    public class AdminService : Validate, IEmployeeConfiguration<Admin>
     {
 
         public IQueryable<Admin> GetAll(Context context)
@@ -66,6 +66,11 @@ namespace Model.Controller
         }
 
         public List<Shift> GetShift(Admin entity, Shift shift, Context context)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public List<Shift> GetShifts(Admin entity, Context context)
         {
             throw new System.NotImplementedException();
         }

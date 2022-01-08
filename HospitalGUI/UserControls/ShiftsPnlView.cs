@@ -1,5 +1,4 @@
 ﻿using Model;
-using Model.Controller;
 using Model.Model;
 using Model.Service;
 using Model.Services;
@@ -23,7 +22,7 @@ namespace HospitalGUI.UserControls
     {
         private IEmployeeConfiguration<Nurse> _nurseConfiguration;
         private IEmployeeConfiguration<Physician> _physicianConfiguration;
-        private IEmployeeConfiguration<Duty> _dutyConfiguration;
+        private IEmployeeConfiguration<Duty> _dutyConfiguration = new DutyService();
 
         public ShiftsPnlView()
         {
@@ -33,28 +32,10 @@ namespace HospitalGUI.UserControls
         {
             _context = context;
             InitializeComponent();
+            this.DutyDataGrid.DataSource = context.Duties;
         }
 
         private readonly Context _context;
-
-        private void InitializeShiftsGrid()
-        {
-            
-        }
-
-        public List<Shift> GetAllShifts()
-        {
-            _physicianConfiguration = new PhysicianService();
-            List<Shift> allShifts = _physicianConfiguration.GetShift(_context);
-            _nurseConfiguration = new NurseService();
-            allShifts.AddRange(_nurseConfiguration.GetShift(_context));
-            return allShifts.ToList();
-        }
-
-        private void ShiftPnl_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
 
         private void AddDutyBtn_Click(object sender, System.EventArgs e)
         {
@@ -62,17 +43,60 @@ namespace HospitalGUI.UserControls
             duty = setDutyTerm(duty);
             _dutyConfiguration = new DutyService();
             _dutyConfiguration.Add(duty, _context);
-            DutyDataGrid.Refresh();
+            DutyDataGrid.DataSource = GetDuties();
+            //wyswietl wszystkie zmiany (shifts) dla danego dyzuru(duty)
+            ShiftsDataGrid.DataSource = GetShifts(duty);
         }
 
         private Duty setDutyTerm(Duty duty)
-        {            
+        {
             var day = Convert.ToInt32(DutyDayTbox.Text.ToString());
-            var month = Convert.ToInt32(DutyDayTbox.Text.ToString());
-            var year = Convert.ToInt32(DutyDayTbox.Text.ToString());
+            var month = Convert.ToInt32(DutyMonthTbx.Text.ToString());
+            var year = Convert.ToInt32(YearTbx.Text.ToString());
             DateTime dutyDate = new DateTime(year, month, day);
             duty.Term = dutyDate;
             return duty;
+        }
+
+        private void AddShiftBtn_Click(object sender, EventArgs e)
+        {
+            Shift shift = new Shift();
+            shift = setShiftValues(shift);
+            //TODO: add shift to duty
+            //add shift to all shifts
+        }
+
+        private Shift setShiftValues(Shift shift)
+        {
+            var day = Convert.ToInt32(ShiftDayTbox.Text.ToString());
+            var month = Convert.ToInt32(ShiftMonthTbox.Text.ToString());
+            var year = Convert.ToInt32(ShiftYearTbox.Text.ToString());
+            DateTime dutyDate = new DateTime(year, month, day);
+            var employeeType = EmpTypeCbox.SelectedItem;
+            var employeeEntity = Convert.ToInt32(EmpIdTbox.Text.ToString());
+
+            return shift;
+        }
+
+        private List<Duty> GetDuties()
+        {            
+            IQueryable<Duty> duties = _dutyConfiguration.GetAll(_context);
+            return duties.ToList();
+        }
+
+        private List<Shift> GetShifts(Duty duty)
+        {
+            return _dutyConfiguration.GetShifts(duty, _context);
+        }
+
+        private void DutyDataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var row = e.RowIndex;
+            var dutyId = Convert.ToInt32(DutyDataGrid.Rows[row].Cells["Id"].Value.ToString());
+            var duty = _dutyConfiguration.FindFirstByCondition(dutyId, _context);
+            //ustaw list<shifts> od tego duty jako ShiftsDataGrid.DataSource
+            ShiftsDataGrid.DataSource = GetShifts(duty);
+            
         }
     }
 }

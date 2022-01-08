@@ -11,22 +11,16 @@ namespace Model.Controller
     {
         public List<Nurse> Add(Nurse entity, Context context)
         {
+            //pobiera wszystkich lekarzy z bazy (plku xml)
             List<Nurse> nurses = context.Nurses;
-            entity.Id = GenerateId(context);            
-            List<Shift> nurseShift = entity.Shift;
-            if (nurseShift != null)
-            {
-                ConvertToMedic converter = new ConvertToMedic(entity);
-                Medic convertedMedic = converter.ConvertNurse();
-                foreach (var item in nurseShift)
-                {
-                    item.Medic = convertedMedic;
-                }
-                entity.Shift = nurseShift;
-            }
-            else entity.Shift = new List<Shift>();            
-            AddShifts(entity.Shift, context);
+            //nadaje id nowemu lekarzowi
+            entity.Id = GenerateId(context);
+            entity.Shift = new List<Shift>();
+            //dodaje lekarza do listy lekarzy
             nurses.Add(entity);
+
+            //zwraca lekarza
+            //do przyszlych testow integracyjnych
             return nurses;
         }
 
@@ -58,9 +52,16 @@ namespace Model.Controller
             return nurse;
         }
 
-        public void AddShifts(List<Shift> shifts, Context context)
+        public void AddShift(Nurse entity, Shift shift, Context context)
         {
-            context.Shifts.Add(shifts);
+            //dodaje zmiane do listy zmian pielegniarza
+            entity.Shift.Add(shift);
+            //przypisuje pielegniarza (skonwertowana do medyka) do zmiany
+            ConvertToMedic converter = new ConvertToMedic(entity);
+            Medic convertedMedic = converter.ConvertPhysician();
+            shift.Medic = convertedMedic;
+            //dodaje zmiane do listy wszystkich zmian
+            context.AllShifts.Add(shift);
         }
 
         public List<Shift> GetShift(Context context)
@@ -74,6 +75,11 @@ namespace Model.Controller
                 }                
             }
             return shifts;
+        }
+
+        public List<Shift> GetShifts(Nurse entity, Context context)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

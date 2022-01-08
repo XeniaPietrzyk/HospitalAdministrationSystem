@@ -54,14 +54,13 @@ namespace HospitalGUI
             this.NurseGridViewBtn = new System.Windows.Forms.Button();
             this.PhysGridViewBtn = new System.Windows.Forms.Button();
             this.AdminGridViewBtn = new System.Windows.Forms.Button();
+            this.shiftsPnlView1 = new HospitalGUI.UserControls.ShiftsPnlView(_context);
             this.employeesPnlView1 = new HospitalGUI.UserControls.EmployeesPnlView(_context, _employee);
-
             this.LeftMenuPnl.SuspendLayout();
             this.UserMenuPnl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.EmployeeGrid)).BeginInit();
             this.SuspendLayout();
-                       
             // 
             // LeftMenuPnl
             // 
@@ -176,46 +175,36 @@ namespace HospitalGUI
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // employeesPnlView1
+            // Data
             // 
-            this.employeesPnlView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.employeesPnlView1.Location = new System.Drawing.Point(0, 0);
-            this.employeesPnlView1.Name = "employeesPnlView1";
-            this.employeesPnlView1.Size = new System.Drawing.Size(700, 623);
-            this.employeesPnlView1.TabIndex = 1;
-            //// 
-            //// Data
-            //// 
-            //this.Data.Name = "Data";
-            //// 
-            //// Time
-            //// 
-            //this.Time.Name = "Time";
-            //// 
-            //// EmployeeId
-            //// 
-            //this.EmployeeId.Name = "EmployeeId";
-            //// 
-            //// Employee
-            //// 
-            //this.Employee.Name = "Employee";
-            //// 
-            //// EmployeeType
-            //// 
-            //this.EmployeeType.Name = "EmployeeType";
-            //// 
-            //// EmployeeSpec
-            //// 
-            //this.EmployeeSpec.Name = "EmployeeSpec";
-            //// 
-            //// EmployeeGrid
-            //// 
-            //this.EmployeeGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(243)))), ((int)(((byte)(250)))));
-            //this.EmployeeGrid.Dock = System.Windows.Forms.DockStyle.Bottom;
-            //this.EmployeeGrid.Location = new System.Drawing.Point(0, 171);
-            //this.EmployeeGrid.Name = "EmployeeGrid";
-            //this.EmployeeGrid.Size = new System.Drawing.Size(573, 300);
-            //this.EmployeeGrid.TabIndex = 0;
+            this.Data.Name = "Data";
+            // 
+            // Time
+            // 
+            this.Time.Name = "Time";
+            // 
+            // EmployeeId
+            // 
+            this.EmployeeId.Name = "EmployeeId";
+            // 
+            // Employee
+            // 
+            this.Employee.Name = "Employee";
+            // 
+            // EmployeeType
+            // 
+            this.EmployeeType.Name = "EmployeeType";
+            // 
+            // EmployeeSpec
+            // 
+            this.EmployeeSpec.Name = "EmployeeSpec";
+            // 
+            // EmployeeGrid
+            // 
+            this.EmployeeGrid.Location = new System.Drawing.Point(0, 0);
+            this.EmployeeGrid.Name = "EmployeeGrid";
+            this.EmployeeGrid.Size = new System.Drawing.Size(240, 150);
+            this.EmployeeGrid.TabIndex = 0;
             // 
             // NurseGridViewBtn
             // 
@@ -238,13 +227,21 @@ namespace HospitalGUI
             this.AdminGridViewBtn.Size = new System.Drawing.Size(75, 23);
             this.AdminGridViewBtn.TabIndex = 0;
             // 
+            // shiftsPnlView1
+            // 
+            this.shiftsPnlView1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
+            this.shiftsPnlView1.Location = new System.Drawing.Point(249, 0);
+            this.shiftsPnlView1.Name = "shiftsPnlView1";
+            this.shiftsPnlView1.Size = new System.Drawing.Size(600, 621);
+            this.shiftsPnlView1.TabIndex = 1;
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(900, 623);
-            this.Controls.Add(this.employeesPnlView1);
+            this.Controls.Add(this.shiftsPnlView1);
             this.Controls.Add(this.LeftMenuPnl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MainView";
@@ -334,5 +331,6 @@ namespace HospitalGUI
         private System.Windows.Forms.Button PhysGridViewBtn;
         private System.Windows.Forms.Button AdminGridViewBtn;
         private UserControls.EmployeesPnlView employeesPnlView1;
+        private UserControls.ShiftsPnlView shiftsPnlView1;
     }
 }

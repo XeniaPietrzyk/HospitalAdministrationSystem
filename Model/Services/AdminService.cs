@@ -1,11 +1,12 @@
 ﻿using Model.Model;
 using Model.Service;
+using Model.Services;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Model.Controller
 {
-    public class AdminService : IEmployeeConfiguration<Admin>
+    public class AdminService : Validate,IEmployeeConfiguration<Admin>
     {
 
         public IQueryable<Admin> GetAll(Context context)
@@ -28,7 +29,7 @@ namespace Model.Controller
         public List<Admin> Add(Admin entity, Context context)
         {
             List<Admin> admin = context.Admins;
-            entity.Id = GenerateId( context);
+            entity.Id = GenerateId(context);
             admin.Add(entity);
             return admin;
 
@@ -45,7 +46,8 @@ namespace Model.Controller
         public void Delete(int id, Context context)
         {
             List<Admin> admin = context.Admins;
-            admin.RemoveAt(id-1);
+            var index = admin.FindIndex(x => x.Id == id);
+            admin.RemoveAt(index);
         }
 
         public void AddShift(Admin entity, Shift shift, Context context)
@@ -66,12 +68,6 @@ namespace Model.Controller
         public List<Shift> GetShift(Admin entity, Shift shift, Context context)
         {
             throw new System.NotImplementedException();
-        }
-
-        private int GenerateId(Context context)
-        {
-            var id = context.Admins.Count;
-            return id;
         }
     }
 }

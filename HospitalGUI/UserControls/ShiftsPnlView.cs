@@ -2,6 +2,7 @@
 using Model.Controller;
 using Model.Model;
 using Model.Service;
+using Model.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,15 @@ using System.Windows.Forms;
 
 namespace HospitalGUI.UserControls
 {
+    //TODO: komunikat o dodaniu/edytowaniu pracownika
+    //TODO: generowanie id globalnego (nie może być tak, że lekarz id = 0 i pielegniarka id = 0)
+    //TODO: sprawdzic dzialanie dodawania, usuwania, edytowania pracownikow
+    //TODO: sprawdzic, czy mozna dodac Duty
+    //TODO: zaprogramowac dodawanie Shift z poziomu admina
+    //TODO: sprawdzic, czy dziala
+    //TODO: zrobic wyswietlanie dla employee
+    //TODO: zrobic dodawanie zmian dla employee
+    //TODO: przetestowac
     public partial class ShiftsPnlView : UserControl
     {
         private IEmployeeConfiguration<Nurse> _nurseConfiguration;
@@ -50,6 +60,7 @@ namespace HospitalGUI.UserControls
         {
             Duty duty = new Duty();
             duty = setDutyTerm(duty);
+            _dutyConfiguration = new DutyService();
             _dutyConfiguration.Add(duty, _context);
             DutyDataGrid.Refresh();
         }

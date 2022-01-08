@@ -1,17 +1,18 @@
 ﻿using Model.Helpers;
 using Model.Model;
 using Model.Service;
+using Model.Services;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Model.Controller
 {
-    public class NurseService : IEmployeeConfiguration<Nurse>
+    public class NurseService : Validate, IEmployeeConfiguration<Nurse>
     {
         public List<Nurse> Add(Nurse entity, Context context)
         {
             List<Nurse> nurses = context.Nurses;
-            entity.Id = GenerateId(entity, context);            
+            entity.Id = GenerateId(context);            
             List<Shift> nurseShift = entity.Shift;
             if (nurseShift != null)
             {
@@ -31,9 +32,9 @@ namespace Model.Controller
 
         public void Delete(int id, Context context)
         {
-            
             List<Nurse> nurse = context.Nurses;
-            nurse.RemoveAt(id-1);
+            var index = nurse.FindIndex(x => x.Id == id);
+            nurse.RemoveAt(index);
         }
 
 
@@ -73,12 +74,6 @@ namespace Model.Controller
                 }                
             }
             return shifts;
-        }
-
-        private int GenerateId(Nurse entity, Context context)
-        {
-            var id = context.Nurses.Count;
-            return id;
         }
     }
 }

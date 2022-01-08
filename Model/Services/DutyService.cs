@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Model.Services
 {
-    class DutyService : IEmployeeConfiguration<Duty>
+    public class DutyService : IEmployeeConfiguration<Duty>
     {
         //NOTE: wlasciwie mozna by poprawic zwracanie List<Duty> na komunikat o udanej lub nieudanej akcji (?)
         public List<Duty> Add(Duty entity, Context context)

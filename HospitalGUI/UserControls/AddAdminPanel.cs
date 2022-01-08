@@ -3,6 +3,7 @@ using Model.Controller;
 using Model.Helpers;
 using Model.Model;
 using Model.Service;
+using Model.Services;
 using System;
 using System.Windows.Forms;
 
@@ -11,6 +12,8 @@ namespace HospitalGUI.UserControls
     public partial class AddAdminPanel : UserControl
     {
         private IEmployeeConfiguration<Admin> _adminConfiguration;
+
+        private Validate validator;
 
         private TextBox PasswordTbx;
         private TextBox UserNameTbx;
@@ -134,8 +137,21 @@ namespace HospitalGUI.UserControls
             newAdmin.UserName = UserNameTbx.Text;
             newAdmin.Sex = (Sex)SexCbox.SelectedItem;
             newAdmin.Permission = (Permission)PermissionCbox.SelectedItem;
-            _adminConfiguration = new AdminService();
-            _adminConfiguration.Add(newAdmin, _context);
+            validator = new Validate();
+            if (validator.UserNameKeyValidate(newAdmin.UserName, _context))
+            {
+                _adminConfiguration = new AdminService();
+                _adminConfiguration.Add(newAdmin, _context);
+            }
+            else
+            {
+                string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
+                string caption = "Error Detected in Input";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+                result = MessageBox.Show(message, caption, buttons);
+            }
+            
         }
     }
 }

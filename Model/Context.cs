@@ -1,5 +1,4 @@
-﻿using Model.Helpers;
-using Model.Model;
+﻿using Model.Model;
 using Model.XML;
 using System;
 using System.Collections.Generic;
@@ -33,19 +32,20 @@ namespace Model
             {
                 Admins.Add(new Admin { Id = 0, Name = "John Doe", Pesel = 12345678910, Permission = Helpers.Permission.admin, UserName = "admin", Password = "admin", Sex = Helpers.Sex.male });
 
+                //TODO: to sluzy tylko do testow, usunac to:
                 List<Shift> nurseShift = new List<Shift>();
                 nurseShift.Add(new Shift() { Id = 1, ShiftDate = DateTime.Now });
                 Shifts.Add(nurseShift);
                 Nurses.Add(new Nurse { Id = 1, Name = "Misery Chastein", Pesel = 98765432198, Permission = Helpers.Permission.employee, UserName = "nurse", Password = "nurse", Sex = Helpers.Sex.female, Shift = nurseShift });
 
                 List<Shift> nurse2Shifts = new List<Shift>();
-                Shift florenceShift = new Shift() { Id = 1, ShiftDate = DateTime.Now };
+                Shift florenceShift = new Shift() { Id = 2, ShiftDate = DateTime.Now };
                 Nurse Florence = new Nurse { Id = 2, Name = "Florence Nightingale", Pesel = 98765432198, Permission = Helpers.Permission.employee, UserName = "nurse2", Password = "nurse2", Sex = Helpers.Sex.male, Shift = nurse2Shifts };
                 Nurses.Add(Florence);
                 nurse2Shifts.Add(florenceShift);
                 Shifts.Add(nurse2Shifts);
+                //koniec usuwania
 
-                ReadDataBase();
                 SetLoginDictionary();
             }
             catch (Exception)

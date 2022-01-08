@@ -3,6 +3,7 @@ using Model.Controller;
 using Model.Helpers;
 using Model.Model;
 using Model.Service;
+using Model.Services;
 using System;
 using System.Windows.Forms;
 
@@ -11,6 +12,8 @@ namespace HospitalGUI.UserControls
     public partial class AddPhysicianPanel : UserControl
     {
         private IEmployeeConfiguration<Physician> _physicianConfiguration;
+
+        private Validate validator;
 
         private TextBox PWZNumbTbx;
         private TextBox PasswordTbx;
@@ -158,9 +161,22 @@ namespace HospitalGUI.UserControls
             newPhysician.Sex = (Sex)SexCbox.SelectedItem;
             newPhysician.Permission = (Permission)PermissionCbox.SelectedItem;
             newPhysician.Specialization = (Specialization)SpecCbox.SelectedItem;
+            validator = new Validate();
+            if (validator.UserNameKeyValidate(newPhysician.UserName, _context))
+            {
+                _physicianConfiguration = new PhysicianService();
+                _physicianConfiguration.Add(newPhysician, _context);
+            }
+            else
+            {
+                string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
+                string caption = "Error Detected in Input";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+                result = MessageBox.Show(message, caption, buttons);
+            }
 
-            _physicianConfiguration = new PhysicianService();
-            _physicianConfiguration.Add(newPhysician, _context);
+            
         }
     }
 }

@@ -3,7 +3,9 @@ using Model.Controller;
 using Model.Helpers;
 using Model.Model;
 using Model.Service;
+using Model.Services;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Windows.Forms;
 
 namespace HospitalGUI.UserControls
@@ -12,6 +14,7 @@ namespace HospitalGUI.UserControls
     {
         private IEmployeeConfiguration<Nurse> _nurseConfiguration;
 
+        private Validate validator;
         private TextBox PasswordTbx;
         private TextBox UserNameTbx;
         private TextBox PeselTxb;
@@ -134,8 +137,20 @@ namespace HospitalGUI.UserControls
             newNurse.UserName = UserNameTbx.Text;
             newNurse.Sex = (Sex)SexCbox.SelectedItem;
             newNurse.Permission = (Permission)PermissionCbox.SelectedItem;
-            _nurseConfiguration = new NurseService();
-            _nurseConfiguration.Add(newNurse, _context);
+            validator = new Validate();
+            if (validator.UserNameKeyValidate(newNurse.UserName, _context))
+            {
+                _nurseConfiguration = new NurseService();
+                _nurseConfiguration.Add(newNurse, _context);
+            }
+            else
+            {
+                string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
+                string caption = "Error Detected in Input";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+                result = MessageBox.Show(message, caption, buttons);
+            }
         }
     }
 }

@@ -286,5 +286,10 @@ namespace HospitalGUI.UserControls
             }
             
         }
+
+        private void EmployeeGrid_ParentChanged(object sender, EventArgs e)
+        {
+            EmployeeGrid.Refresh();
+        }
     }
 }

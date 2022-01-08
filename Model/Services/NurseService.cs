@@ -17,7 +17,7 @@ namespace Model.Controller
             if (nurseShift != null)
             {
                 ConvertToMedic converter = new ConvertToMedic(entity);
-                Medic convertedMedic = converter.ConvertPhysician();
+                Medic convertedMedic = converter.ConvertNurse();
                 foreach (var item in nurseShift)
                 {
                     item.Medic = convertedMedic;

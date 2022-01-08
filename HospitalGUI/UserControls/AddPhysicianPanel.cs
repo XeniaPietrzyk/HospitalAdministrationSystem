@@ -152,31 +152,46 @@ namespace HospitalGUI.UserControls
 
         private void AddAdminBtn_Click(object sender, EventArgs e)
         {
-            Physician newPhysician = new Physician();
-            newPhysician.Name = NameTbx.Text;
-            newPhysician.Pesel = long.Parse(PeselTxb.Text);
-            newPhysician.Password = PasswordTbx.Text;
-            newPhysician.UserName = UserNameTbx.Text;
-            newPhysician.PWZNumber = Convert.ToInt32(PWZNumbTbx.Text);
-            newPhysician.Sex = (Sex)SexCbox.SelectedItem;
-            newPhysician.Permission = (Permission)PermissionCbox.SelectedItem;
-            newPhysician.Specialization = (Specialization)SpecCbox.SelectedItem;
-            validator = new Validate();
-            if (validator.UserNameKeyValidate(newPhysician.UserName, _context))
+            if (IsNull())
             {
-                _physicianConfiguration = new PhysicianService();
-                _physicianConfiguration.Add(newPhysician, _context);
-            }
-            else
+                Physician newPhysician = new Physician();
+                newPhysician.Name = NameTbx.Text;
+                newPhysician.Pesel = long.Parse(PeselTxb.Text);
+                newPhysician.Password = PasswordTbx.Text;
+                newPhysician.UserName = UserNameTbx.Text;
+                newPhysician.PWZNumber = Convert.ToInt32(PWZNumbTbx.Text);
+                newPhysician.Sex = (Sex)SexCbox.SelectedItem;
+                newPhysician.Permission = (Permission)PermissionCbox.SelectedItem;
+                newPhysician.Specialization = (Specialization)SpecCbox.SelectedItem;
+                validator = new Validate();
+                if (validator.UserNameKeyValidate(newPhysician.UserName, _context))
+                {
+                    _physicianConfiguration = new PhysicianService();
+                    _physicianConfiguration.Add(newPhysician, _context);
+                }
+                else
+                {
+                    string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
+                    string caption = "Error Detected in Input";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult result;
+                    result = MessageBox.Show(message, caption, buttons);
+                }
+            } 
+        }
+
+        private bool IsNull()
+        {
+            if (NameTbx.Text == "" || PeselTxb.Text == "" || PasswordTbx.Text == "" || UserNameTbx.Text == "")
             {
-                string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
+                string message = "Żadne pole nie może być puste!";
                 string caption = "Error Detected in Input";
                 MessageBoxButtons buttons = MessageBoxButtons.OK;
                 DialogResult result;
                 result = MessageBox.Show(message, caption, buttons);
+                return false;
             }
-
-            
+            return true;
         }
     }
 }

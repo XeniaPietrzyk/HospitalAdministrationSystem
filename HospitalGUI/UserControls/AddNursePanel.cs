@@ -91,6 +91,7 @@ namespace HospitalGUI.UserControls
             this.AddNurseBtn.TabIndex = 9;
             this.AddNurseBtn.Text = "Dodaj ";
             this.AddNurseBtn.UseVisualStyleBackColor = false;
+            this.AddNurseBtn.Click += new System.EventHandler(this.AddNurseBtn_Click_1);
             // 
             // SexCbox
             // 
@@ -99,8 +100,6 @@ namespace HospitalGUI.UserControls
             this.SexCbox.Name = "SexCbox";
             this.SexCbox.Size = new System.Drawing.Size(121, 23);
             this.SexCbox.TabIndex = 19;
-            this.SexCbox.DataSource = Sex.GetValues(typeof(Sex));
-            //this.SexCbox.DataSource = Sex.GetValues(typeof(Sex));
             // 
             // PermissionCbox
             // 
@@ -109,7 +108,6 @@ namespace HospitalGUI.UserControls
             this.PermissionCbox.Name = "PermissionCbox";
             this.PermissionCbox.Size = new System.Drawing.Size(121, 23);
             this.PermissionCbox.TabIndex = 21;
-            this.PermissionCbox.DataSource = Permission.GetValues(typeof(Permission));
             // 
             // AddNursePanel
             // 
@@ -151,6 +149,48 @@ namespace HospitalGUI.UserControls
                 DialogResult result;
                 result = MessageBox.Show(message, caption, buttons);
             }
+        }
+
+        private void AddNurseBtn_Click_1(object sender, EventArgs e)
+        {
+            if (IsNull())
+            {
+                Nurse newNurse = new Nurse();
+                newNurse.Name = NameTbx.Text;
+                newNurse.Pesel = long.Parse(PeselTxb.Text);
+                newNurse.Password = PasswordTbx.Text;
+                newNurse.UserName = UserNameTbx.Text;
+                newNurse.Sex = (Sex)SexCbox.SelectedItem;
+                newNurse.Permission = (Permission)PermissionCbox.SelectedItem;
+                validator = new Validate();
+                if (validator.UserNameKeyValidate(newNurse.UserName, _context))
+                {
+                    _nurseConfiguration = new NurseService();
+                    _nurseConfiguration.Add(newNurse, _context);
+                }
+                else
+                {
+                    string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
+                    string caption = "Error Detected in Input";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult result;
+                    result = MessageBox.Show(message, caption, buttons);
+                }
+            }            
+        }
+
+        private bool IsNull()
+        {
+            if (NameTbx.Text == "" || PeselTxb.Text == "" || PasswordTbx.Text == "" || UserNameTbx.Text == "")
+            {
+                string message = "Żadne pole nie może być puste!";
+                string caption = "Error Detected in Input";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+                result = MessageBox.Show(message, caption, buttons);
+                return false;
+            }
+            return true;
         }
     }
 }

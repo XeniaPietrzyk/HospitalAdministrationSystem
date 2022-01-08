@@ -130,28 +130,45 @@ namespace HospitalGUI.UserControls
 
         private void AddAdminBtn_Click(object sender, EventArgs e)
         {
-            Admin newAdmin = new Admin();
-            newAdmin.Name = NameTbx.Text;
-            newAdmin.Pesel = long.Parse(PeselTxb.Text);
-            newAdmin.Password = PasswordTbx.Text;
-            newAdmin.UserName = UserNameTbx.Text;
-            newAdmin.Sex = (Sex)SexCbox.SelectedItem;
-            newAdmin.Permission = (Permission)PermissionCbox.SelectedItem;
-            validator = new Validate();
-            if (validator.UserNameKeyValidate(newAdmin.UserName, _context))
+            if (IsNull())
             {
-                _adminConfiguration = new AdminService();
-                _adminConfiguration.Add(newAdmin, _context);
-            }
-            else
+                Admin newAdmin = new Admin();
+                newAdmin.Name = NameTbx.Text;
+                newAdmin.Pesel = long.Parse(PeselTxb.Text);
+                newAdmin.Password = PasswordTbx.Text;
+                newAdmin.UserName = UserNameTbx.Text;
+                newAdmin.Sex = (Sex)SexCbox.SelectedItem;
+                newAdmin.Permission = (Permission)PermissionCbox.SelectedItem;
+                validator = new Validate();
+                if (validator.UserNameKeyValidate(newAdmin.UserName, _context))
+                {
+                    _adminConfiguration = new AdminService();
+                    _adminConfiguration.Add(newAdmin, _context);
+                }
+                else
+                {
+                    string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
+                    string caption = "Error Detected in Input";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult result;
+                    result = MessageBox.Show(message, caption, buttons);
+                }
+            }           
+            
+        }
+
+        private bool IsNull()
+        {
+            if (NameTbx.Text == "" || PeselTxb.Text == "" || PasswordTbx.Text == "" || UserNameTbx.Text == "")
             {
-                string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
+                string message = "Żadne pole nie może być puste!";
                 string caption = "Error Detected in Input";
                 MessageBoxButtons buttons = MessageBoxButtons.OK;
                 DialogResult result;
                 result = MessageBox.Show(message, caption, buttons);
+                return false;
             }
-            
+            return true;
         }
     }
 }

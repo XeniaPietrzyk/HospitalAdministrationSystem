@@ -34,7 +34,6 @@ namespace HospitalGUI
             {
                 InitializeAdminComponent();
             }
-            //InitializeShiftsGrid();
             employeesPnlView1.Hide();
             //TODO: czy to jest potrzebne?
             SetPositionIcon(employee);            
@@ -102,9 +101,8 @@ namespace HospitalGUI
             NavEmplBtn.BackColor = Color.FromArgb(235, 243, 250);
             if (GetEmployeeType(_employee) == "Admin")
             {
-                //TODO: widok wszystkich dyzurow i zmian, wszystkich pracownikow                
+                               
             }
-            //ShiftsPnlView.Show();
             employeesPnlView1.Hide();
             shiftsPnlView1.Show();
         }
@@ -120,8 +118,6 @@ namespace HospitalGUI
             //GetPhysicianList();
             //GetNurseList();
             shiftsPnlView1.Hide();
-            //TODO: to się zjebało
-            //trzeba bedzie dodac od nowa, gdy juz wszystkie UserG beda gotowe
             employeesPnlView1.Show();
          }
 

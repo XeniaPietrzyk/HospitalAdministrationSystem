@@ -1,17 +1,15 @@
 ﻿using Model.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Model.Services
 {
-    public class ShiftService
+    public class ShiftService : IShiftConfiguration<Medic>
     {
         public List<Shift> Add(Shift entity, Context context)
         {
             List<Shift> shifts = context.AllShifts;
+            entity.Id = GenerateId(context);
             shifts.Add(entity);
             context.AllShifts = shifts;
             return shifts;
@@ -28,11 +26,11 @@ namespace Model.Services
             return duty;
         }
 
-        public List<Shift> Update(Shift entity, Context context)
+        public List<Shift> Update(Shift shift, Context context)
         {
             List<Shift> duties = context.AllShifts;
-            duties.RemoveAt(entity.Id);
-            duties.Add(entity);
+            duties.RemoveAt(shift.Id);
+            duties.Add(shift);
             return duties;
         }
 
@@ -48,5 +46,13 @@ namespace Model.Services
             return id;
         }
 
+        public List<Shift> UpdateMedic(List<Shift> shifts, Medic entity, Context context)
+        {
+            foreach (var item in shifts)
+            {
+                item.Medic = entity;
+            }
+            return shifts;
+        }
     }
 }

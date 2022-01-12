@@ -3,8 +3,14 @@ using System;
 
 namespace Model.Helpers
 {
-    class ConvertToMedic
+    public class ConvertToMedic
     {
+        public ConvertToMedic(Nurse nurse, Physician physician)
+        {
+            this.nurse = nurse;
+            this.physician = physician;
+        }
+
         public ConvertToMedic(Nurse nurse)
         {
             this.nurse = nurse;
@@ -25,6 +31,8 @@ namespace Model.Helpers
             medic.Name = nurse.Name;
             medic.Pesel = nurse.Pesel;
             medic.Sex = nurse.Sex;
+            medic.Permission = nurse.Permission;
+            medic.EmployeeType = nurse.EmployeeType;
             return medic;
         }
 
@@ -35,6 +43,8 @@ namespace Model.Helpers
             medic.Name = physician.Name;
             medic.Pesel = physician.Pesel;
             medic.Sex = physician.Sex;
+            medic.Permission = physician.Permission;
+            medic.EmployeeType = physician.EmployeeType;
             return medic;
         }
     }

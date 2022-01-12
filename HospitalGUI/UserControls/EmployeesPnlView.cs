@@ -14,6 +14,7 @@ namespace HospitalGUI.UserControls
         private IEmployeeConfiguration<Admin> _adminConfiguration;
         private IEmployeeConfiguration<Nurse> _nurseConfiguration;
         private IEmployeeConfiguration<Physician> _physicianConfiguration;
+        private IEmployeeConfiguration<Shift> _shiftConfiguration;
 
         public EmployeesPnlView()
         {
@@ -161,7 +162,6 @@ namespace HospitalGUI.UserControls
                 var passwordRow = EmployeeGrid.Rows[rowindex].Cells[6].Value.ToString();
                 var permissionRow = EmployeeGrid.Rows[rowindex].Cells[7].Value.ToString();
 
-
                 if (ActiveEmployee == "Admin")
                 {
                     Admin newAdmin = new Admin()
@@ -184,7 +184,7 @@ namespace HospitalGUI.UserControls
                     }
                     else newAdmin.Permission = Model.Helpers.Permission.employee;
 
-                    _adminConfiguration.Update(newAdmin, _context);                
+                    _adminConfiguration.Update(newAdmin, _context);
                 }
 
                 if (ActiveEmployee == "Nurse")
@@ -210,6 +210,7 @@ namespace HospitalGUI.UserControls
                     else newNurse.Permission = Model.Helpers.Permission.employee;
 
                     _nurseConfiguration.Update(newNurse, _context);
+                    newNurse.Shift = _nurseConfiguration.FindFirstByCondition(newNurse.Id, _context).Shift;
                 }
                 if (ActiveEmployee == "Physician")
                 {

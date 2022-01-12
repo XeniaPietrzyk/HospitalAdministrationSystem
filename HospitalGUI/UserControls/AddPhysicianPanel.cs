@@ -151,33 +151,54 @@ namespace HospitalGUI.UserControls
         }
 
         private void AddAdminBtn_Click(object sender, EventArgs e)
-        {
+        {          
             if (IsNull())
             {
                 Physician newPhysician = new Physician();
                 newPhysician.Name = NameTbx.Text;
-                newPhysician.Pesel = long.Parse(PeselTxb.Text);
-                newPhysician.Password = PasswordTbx.Text;
-                newPhysician.UserName = UserNameTbx.Text;
-                newPhysician.PWZNumber = Convert.ToInt32(PWZNumbTbx.Text);
-                newPhysician.Sex = (Sex)SexCbox.SelectedItem;
-                newPhysician.Permission = (Permission)PermissionCbox.SelectedItem;
-                newPhysician.Specialization = (Specialization)SpecCbox.SelectedItem;
-                validator = new Validate();
-                if (validator.UserNameKeyValidate(newPhysician.UserName, _context))
+                var peselValidate = true;
+                try
                 {
-                    _physicianConfiguration = new PhysicianService();
-                    _physicianConfiguration.Add(newPhysician, _context);
+                    var pesel = long.Parse(PeselTxb.Text);
                 }
-                else
+                catch (Exception)
                 {
-                    string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
-                    string caption = "Error Detected in Input";
-                    MessageBoxButtons buttons = MessageBoxButtons.OK;
-                    DialogResult result;
-                    result = MessageBox.Show(message, caption, buttons);
+                    MessageBox.Show("PESEL powinien składać się z cyfr");
+                    PeselTxb.Focus();
+                    peselValidate = false;
                 }
-            } 
+                if (peselValidate)
+                {
+                    if (PeselTxb.Text.Length < 11 || PeselTxb.Text.Length > 11)
+                    {
+                        MessageBox.Show("PESEL powinien mieć długość 11 cyfr");
+                        PeselTxb.Focus();
+                    }
+                    newPhysician.Pesel = long.Parse(PeselTxb.Text);
+                    newPhysician.Password = PasswordTbx.Text;
+                    newPhysician.UserName = UserNameTbx.Text;
+                    newPhysician.Sex = (Sex)SexCbox.SelectedItem;
+                    newPhysician.Specialization = (Specialization)SpecCbox.SelectedItem;
+                    newPhysician.PWZNumber = Convert.ToInt32(PWZNumbTbx.Text);
+                    newPhysician.Permission = (Permission)PermissionCbox.SelectedItem;
+                    newPhysician.EmployeeType = EmployeeType.physician;
+                    validator = new Validate();
+                    if (validator.UserNameKeyValidate(newPhysician.UserName, _context))
+                    {
+                        _physicianConfiguration = new PhysicianService();
+                        _physicianConfiguration.Add(newPhysician, _context);
+                    }
+                    else
+                    {
+                        string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
+                        string caption = "Error Detected in Input";
+                        MessageBoxButtons buttons = MessageBoxButtons.OK;
+                        DialogResult result;
+                        UserNameTbx.Focus();
+                        result = MessageBox.Show(message, caption, buttons);
+                    }
+                }
+            }
         }
 
         private bool IsNull()

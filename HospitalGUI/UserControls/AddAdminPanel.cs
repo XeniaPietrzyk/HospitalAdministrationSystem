@@ -134,27 +134,47 @@ namespace HospitalGUI.UserControls
             {
                 Admin newAdmin = new Admin();
                 newAdmin.Name = NameTbx.Text;
-                newAdmin.Pesel = long.Parse(PeselTxb.Text);
-                newAdmin.Password = PasswordTbx.Text;
-                newAdmin.UserName = UserNameTbx.Text;
-                newAdmin.Sex = (Sex)SexCbox.SelectedItem;
-                newAdmin.Permission = (Permission)PermissionCbox.SelectedItem;
-                validator = new Validate();
-                if (validator.UserNameKeyValidate(newAdmin.UserName, _context))
+                var peselValidate = true;
+                try
                 {
-                    _adminConfiguration = new AdminService();
-                    _adminConfiguration.Add(newAdmin, _context);
+                    var pesel = long.Parse(PeselTxb.Text);
                 }
-                else
+                catch (Exception)
                 {
-                    string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
-                    string caption = "Error Detected in Input";
-                    MessageBoxButtons buttons = MessageBoxButtons.OK;
-                    DialogResult result;
-                    result = MessageBox.Show(message, caption, buttons);
+                    MessageBox.Show("PESEL powinien składać się z cyfr");
+                    PeselTxb.Focus();
+                    peselValidate = false;
                 }
-            }           
-            
+                if (peselValidate)
+                {
+                    if (PeselTxb.Text.Length < 11 || PeselTxb.Text.Length > 11)
+                    {
+                        MessageBox.Show("PESEL powinien mieć długość 11 cyfr");
+                        PeselTxb.Focus();
+                    }
+                    newAdmin.Pesel = long.Parse(PeselTxb.Text);
+                    newAdmin.Password = PasswordTbx.Text;
+                    newAdmin.UserName = UserNameTbx.Text;
+                    newAdmin.Sex = (Sex)SexCbox.SelectedItem;
+                    newAdmin.Permission = (Permission)PermissionCbox.SelectedItem;
+                    newAdmin.EmployeeType = EmployeeType.admin;
+                    validator = new Validate();
+                    if (validator.UserNameKeyValidate(newAdmin.UserName, _context))
+                    {
+                        _adminConfiguration = new AdminService();
+                        _adminConfiguration.Add(newAdmin, _context);
+                    }
+                    else
+                    {
+                        string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
+                        string caption = "Error Detected in Input";
+                        MessageBoxButtons buttons = MessageBoxButtons.OK;
+                        DialogResult result;
+                        UserNameTbx.Focus();
+                        result = MessageBox.Show(message, caption, buttons);
+                    }
+                }
+            }
         }
 
         private bool IsNull()

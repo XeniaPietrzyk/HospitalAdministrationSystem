@@ -1,4 +1,8 @@
 ﻿
+using Model.Helpers;
+using System;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
 namespace HospitalGUI.UserControls
 {
     partial class ShiftsPnlView
@@ -32,13 +36,12 @@ namespace HospitalGUI.UserControls
             this.Dutylbl = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.ShiftPnl = new System.Windows.Forms.Panel();
+            this.MedicNameTbox = new System.Windows.Forms.TextBox();
+            this.MedicSpecTbox = new System.Windows.Forms.TextBox();
+            this.MedicTypeTbox = new System.Windows.Forms.TextBox();
             this.ShiftsDataGrid = new System.Windows.Forms.DataGridView();
             this.DutyDataGrid = new System.Windows.Forms.DataGridView();
-            this.EmpTypeCbox = new System.Windows.Forms.ComboBox();
             this.EmpIdTbox = new System.Windows.Forms.TextBox();
-            this.ShiftYearTbox = new System.Windows.Forms.TextBox();
-            this.ShiftMonthTbox = new System.Windows.Forms.TextBox();
-            this.ShiftDayTbox = new System.Windows.Forms.TextBox();
             this.YearTbx = new System.Windows.Forms.TextBox();
             this.DutyMonthTbx = new System.Windows.Forms.TextBox();
             this.DutyDayTbox = new System.Windows.Forms.TextBox();
@@ -68,7 +71,7 @@ namespace HospitalGUI.UserControls
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(71)))), ((int)(((byte)(139)))));
-            this.label1.Location = new System.Drawing.Point(20, 284);
+            this.label1.Location = new System.Drawing.Point(20, 270);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(70, 18);
             this.label1.TabIndex = 4;
@@ -76,13 +79,12 @@ namespace HospitalGUI.UserControls
             // 
             // ShiftPnl
             // 
+            this.ShiftPnl.Controls.Add(this.MedicNameTbox);
+            this.ShiftPnl.Controls.Add(this.MedicSpecTbox);
+            this.ShiftPnl.Controls.Add(this.MedicTypeTbox);
             this.ShiftPnl.Controls.Add(this.ShiftsDataGrid);
             this.ShiftPnl.Controls.Add(this.DutyDataGrid);
-            this.ShiftPnl.Controls.Add(this.EmpTypeCbox);
             this.ShiftPnl.Controls.Add(this.EmpIdTbox);
-            this.ShiftPnl.Controls.Add(this.ShiftYearTbox);
-            this.ShiftPnl.Controls.Add(this.ShiftMonthTbox);
-            this.ShiftPnl.Controls.Add(this.ShiftDayTbox);
             this.ShiftPnl.Controls.Add(this.YearTbx);
             this.ShiftPnl.Controls.Add(this.DutyMonthTbx);
             this.ShiftPnl.Controls.Add(this.DutyDayTbox);
@@ -98,15 +100,43 @@ namespace HospitalGUI.UserControls
             this.ShiftPnl.Size = new System.Drawing.Size(556, 583);
             this.ShiftPnl.TabIndex = 2;
             // 
+            // MedicNameTbox
+            // 
+            this.MedicNameTbox.Location = new System.Drawing.Point(295, 348);
+            this.MedicNameTbox.Name = "MedicNameTbox";
+            this.MedicNameTbox.PlaceholderText = "Imię i nazwisko";
+            this.MedicNameTbox.ReadOnly = true;
+            this.MedicNameTbox.Size = new System.Drawing.Size(150, 23);
+            this.MedicNameTbox.TabIndex = 23;
+            // 
+            // MedicSpecTbox
+            // 
+            this.MedicSpecTbox.Location = new System.Drawing.Point(156, 348);
+            this.MedicSpecTbox.Name = "MedicSpecTbox";
+            this.MedicSpecTbox.PlaceholderText = "Specjalizacja";
+            this.MedicSpecTbox.ReadOnly = true;
+            this.MedicSpecTbox.Size = new System.Drawing.Size(100, 23);
+            this.MedicSpecTbox.TabIndex = 22;
+            // 
+            // MedicTypeTbox
+            // 
+            this.MedicTypeTbox.Location = new System.Drawing.Point(20, 348);
+            this.MedicTypeTbox.Name = "MedicTypeTbox";
+            this.MedicTypeTbox.PlaceholderText = "Posada";
+            this.MedicTypeTbox.ReadOnly = true;
+            this.MedicTypeTbox.Size = new System.Drawing.Size(100, 23);
+            this.MedicTypeTbox.TabIndex = 21;
+            // 
             // ShiftsDataGrid
             // 
+            this.ShiftsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.ShiftsDataGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
             this.ShiftsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ShiftsDataGrid.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
-            this.ShiftsDataGrid.Location = new System.Drawing.Point(0, 394);
+            this.ShiftsDataGrid.Location = new System.Drawing.Point(0, 383);
             this.ShiftsDataGrid.Name = "ShiftsDataGrid";
             this.ShiftsDataGrid.RowTemplate.Height = 25;
-            this.ShiftsDataGrid.Size = new System.Drawing.Size(556, 150);
+            this.ShiftsDataGrid.Size = new System.Drawing.Size(556, 160);
             this.ShiftsDataGrid.TabIndex = 20;
             // 
             // DutyDataGrid
@@ -122,45 +152,14 @@ namespace HospitalGUI.UserControls
             this.DutyDataGrid.TabIndex = 19;
             this.DutyDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DutyDataGrid_CellClick);
             // 
-            // EmpTypeCbox
-            // 
-            this.EmpTypeCbox.FormattingEnabled = true;
-            this.EmpTypeCbox.Location = new System.Drawing.Point(17, 358);
-            this.EmpTypeCbox.Name = "EmpTypeCbox";
-            this.EmpTypeCbox.Size = new System.Drawing.Size(100, 23);
-            this.EmpTypeCbox.TabIndex = 18;
-            // 
             // EmpIdTbox
             // 
-            this.EmpIdTbox.Location = new System.Drawing.Point(166, 358);
+            this.EmpIdTbox.Location = new System.Drawing.Point(20, 308);
             this.EmpIdTbox.Name = "EmpIdTbox";
             this.EmpIdTbox.PlaceholderText = "Id pracownika";
             this.EmpIdTbox.Size = new System.Drawing.Size(100, 23);
             this.EmpIdTbox.TabIndex = 17;
-            // 
-            // ShiftYearTbox
-            // 
-            this.ShiftYearTbox.Location = new System.Drawing.Point(315, 315);
-            this.ShiftYearTbox.Name = "ShiftYearTbox";
-            this.ShiftYearTbox.PlaceholderText = "Rok";
-            this.ShiftYearTbox.Size = new System.Drawing.Size(100, 23);
-            this.ShiftYearTbox.TabIndex = 16;
-            // 
-            // ShiftMonthTbox
-            // 
-            this.ShiftMonthTbox.Location = new System.Drawing.Point(166, 315);
-            this.ShiftMonthTbox.Name = "ShiftMonthTbox";
-            this.ShiftMonthTbox.PlaceholderText = "Miesiąc";
-            this.ShiftMonthTbox.Size = new System.Drawing.Size(100, 23);
-            this.ShiftMonthTbox.TabIndex = 15;
-            // 
-            // ShiftDayTbox
-            // 
-            this.ShiftDayTbox.Location = new System.Drawing.Point(17, 315);
-            this.ShiftDayTbox.Name = "ShiftDayTbox";
-            this.ShiftDayTbox.PlaceholderText = "Dzień";
-            this.ShiftDayTbox.Size = new System.Drawing.Size(100, 23);
-            this.ShiftDayTbox.TabIndex = 14;
+            this.EmpIdTbox.TextChanged += new System.EventHandler(this.EmpIdTbox_TextChanged);
             // 
             // YearTbx
             // 
@@ -193,7 +192,7 @@ namespace HospitalGUI.UserControls
             this.AddShiftBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AddShiftBtn.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.AddShiftBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(71)))), ((int)(((byte)(139)))));
-            this.AddShiftBtn.Location = new System.Drawing.Point(470, 358);
+            this.AddShiftBtn.Location = new System.Drawing.Point(470, 347);
             this.AddShiftBtn.Name = "AddShiftBtn";
             this.AddShiftBtn.Size = new System.Drawing.Size(80, 30);
             this.AddShiftBtn.TabIndex = 10;
@@ -287,12 +286,11 @@ namespace HospitalGUI.UserControls
         private System.Windows.Forms.TextBox YearTbx;
         private System.Windows.Forms.TextBox DutyMonthTbx;
         private System.Windows.Forms.TextBox DutyDayTbox;
-        private System.Windows.Forms.ComboBox EmpTypeCbox;
         private System.Windows.Forms.TextBox EmpIdTbox;
-        private System.Windows.Forms.TextBox ShiftYearTbox;
-        private System.Windows.Forms.TextBox ShiftMonthTbox;
-        private System.Windows.Forms.TextBox ShiftDayTbox;
         private System.Windows.Forms.DataGridView DutyDataGrid;
         private System.Windows.Forms.DataGridView ShiftsDataGrid;
+        private System.Windows.Forms.TextBox MedicSpecTbox;
+        private System.Windows.Forms.TextBox MedicTypeTbox;
+        private System.Windows.Forms.TextBox MedicNameTbox;
     }
 }

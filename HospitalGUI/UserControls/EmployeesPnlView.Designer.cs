@@ -147,7 +147,7 @@ namespace HospitalGUI.UserControls
             // addNursePanel2
             // 
             this.addNursePanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
-            this.addNursePanel1.Location = new System.Drawing.Point(22, 134);
+            this.addNursePanel1.Location = new System.Drawing.Point(5, 134);
             this.addNursePanel1.Name = "addNursePanel1";
             this.addNursePanel1.Size = new System.Drawing.Size(610, 155);
             this.addNursePanel1.TabIndex = 7;
@@ -155,7 +155,7 @@ namespace HospitalGUI.UserControls
             // addAdminPanel2
             // 
             this.addAdminPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
-            this.addAdminPanel1.Location = new System.Drawing.Point(5, 136);
+            this.addAdminPanel1.Location = new System.Drawing.Point(5, 134);
             this.addAdminPanel1.Name = "addAdminPanel1";
             this.addAdminPanel1.Size = new System.Drawing.Size(610, 155);
             this.addAdminPanel1.TabIndex = 8;

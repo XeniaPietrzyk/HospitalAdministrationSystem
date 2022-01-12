@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace Model.Helpers
 {
-    public enum Specialization
+    public enum EmployeeType
     {
-        cardiology, 
-        urology, 
-        neurology,
-        laryngology,
-        none
+        admin,
+        physician,
+        nurse
     }
 }

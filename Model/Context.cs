@@ -33,8 +33,8 @@ namespace Model
             try
             {
                 //domyslny admin programu
-                Admins.Add(new Admin { Id = 0, Name = "John Doe", Pesel = 12345678910, Permission = Helpers.Permission.admin, UserName = "admin", Password = "admin", Sex = Helpers.Sex.male });
-
+                Admins.Add(new Admin { Id = 0, Name = "John Doe", Pesel = 12345678910, Permission = Helpers.Permission.admin, UserName = "admin", Password = "admin", Sex = Helpers.Sex.male, EmployeeType = Helpers.EmployeeType.admin });
+                ReadDataBase();
                 SetLoginDictionary();
             }
             catch (Exception)
@@ -50,6 +50,8 @@ namespace Model
                 Admins = _xmlserializer.Xml2Object<Admin>(Admins, "admins");
                 Nurses = _xmlserializer.Xml2Object<Nurse>(Nurses, "nurses");
                 Physicians = _xmlserializer.Xml2Object<Physician>(Physicians, "physicians");
+                Duties = _xmlserializer.Xml2Object<Duty>(Duties, "duties");
+                AllShifts = _xmlserializer.Xml2Object<Shift>(AllShifts, "shifts");
             }
             catch (Exception)
             {
@@ -64,6 +66,8 @@ namespace Model
                 var adminSave = _xmlserializer.Object2Xml<Admin>(Admins, "admins");
                 var nurseSave = _xmlserializer.Object2Xml<Nurse>(Nurses, "nurses");
                 var physiciansSave = _xmlserializer.Object2Xml<Physician>(Physicians, "physicians");
+                var dutySave = _xmlserializer.Object2Xml<Duty>(Duties, "duties");
+                var shiftSave = _xmlserializer.Object2Xml<Shift>(AllShifts, "shifts");
             }
             catch (Exception)
             {

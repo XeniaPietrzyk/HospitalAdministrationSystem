@@ -5,7 +5,6 @@ using Model.Model;
 using Model.Service;
 using Model.Services;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Windows.Forms;
 
 namespace HospitalGUI.UserControls
@@ -15,13 +14,13 @@ namespace HospitalGUI.UserControls
         private IEmployeeConfiguration<Nurse> _nurseConfiguration;
 
         private Validate validator;
-        private TextBox PasswordTbx;
-        private TextBox UserNameTbx;
-        private TextBox PeselTxb;
-        private TextBox NameTbx;
-        private ComboBox SexCbox;
-        private ComboBox PermissionCbox;
-        private Button AddNurseBtn;
+        private System.Windows.Forms.TextBox PasswordTbx;
+        private System.Windows.Forms.TextBox UserNameTbx;
+        private System.Windows.Forms.TextBox PeselTxb;
+        private System.Windows.Forms.TextBox NameTbx;
+        private System.Windows.Forms.ComboBox SexCbox;
+        private System.Windows.Forms.ComboBox PermissionCbox;
+        private System.Windows.Forms.Button AddNurseBtn;
         private Context _context;
 
         public AddNursePanel()
@@ -100,6 +99,8 @@ namespace HospitalGUI.UserControls
             this.SexCbox.Name = "SexCbox";
             this.SexCbox.Size = new System.Drawing.Size(121, 23);
             this.SexCbox.TabIndex = 19;
+            this.SexCbox.DataSource = Sex.GetValues(typeof(Sex));
+            //this.SexCbox.DataBind();
             // 
             // PermissionCbox
             // 
@@ -108,6 +109,7 @@ namespace HospitalGUI.UserControls
             this.PermissionCbox.Name = "PermissionCbox";
             this.PermissionCbox.Size = new System.Drawing.Size(121, 23);
             this.PermissionCbox.TabIndex = 21;
+            this.PermissionCbox.DataSource = Permission.GetValues(typeof(Permission));
             // 
             // AddNursePanel
             // 
@@ -123,33 +125,47 @@ namespace HospitalGUI.UserControls
             this.Size = new System.Drawing.Size(610, 155);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
-        private void AddNurseBtn_Click(object sender, EventArgs e)
-        {
-            Nurse newNurse = new Nurse();
-            newNurse.Name = NameTbx.Text;
-            newNurse.Pesel = long.Parse(PeselTxb.Text);
-            newNurse.Password = PasswordTbx.Text;
-            newNurse.UserName = UserNameTbx.Text;
-            newNurse.Sex = (Sex)SexCbox.SelectedItem;
-            newNurse.Permission = (Permission)PermissionCbox.SelectedItem;
-            validator = new Validate();
-            if (validator.UserNameKeyValidate(newNurse.UserName, _context))
-            {
-                _nurseConfiguration = new NurseService();
-                _nurseConfiguration.Add(newNurse, _context);
-            }
-            else
-            {
-                string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
-                string caption = "Error Detected in Input";
-                MessageBoxButtons buttons = MessageBoxButtons.OK;
-                DialogResult result;
-                result = MessageBox.Show(message, caption, buttons);
-            }
-        }
+        //private void AddNurseBtn_Click(object sender, EventArgs e)
+        //{
+        //    Nurse newNurse = new Nurse();
+        //    newNurse.Name = NameTbx.Text;
+        //    try
+        //    {
+        //        var pesel = long.Parse(PeselTxb.Text);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        MessageBox.Show("PESEL powinien składać się z cyfr");
+        //        PeselTxb.Focus();
+        //        //throw;
+        //    }
+        //    if (long.Parse(PeselTxb.Text) < 11 || long.Parse(PeselTxb.Text) > 11)
+        //    {
+        //        MessageBox.Show("PESEL powinien mieć długość 11 cyfr");
+        //        PeselTxb.Focus();
+        //    }
+        //    newNurse.Pesel = long.Parse(PeselTxb.Text);
+        //    newNurse.Password = PasswordTbx.Text;
+        //    newNurse.UserName = UserNameTbx.Text;
+        //    newNurse.Sex = (Sex)SexCbox.SelectedItem;
+        //    newNurse.Permission = (Permission)PermissionCbox.SelectedItem;
+        //    validator = new Validate();
+        //    if (validator.UserNameKeyValidate(newNurse.UserName, _context))
+        //    {
+        //        _nurseConfiguration = new NurseService();
+        //        _nurseConfiguration.Add(newNurse, _context);
+        //    }
+        //    else
+        //    {
+        //        string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
+        //        string caption = "Error Detected in Input";
+        //        MessageBoxButtons buttons = MessageBoxButtons.OK;
+        //        DialogResult result;
+        //        result = MessageBox.Show(message, caption, buttons);
+        //    }
+        //}
 
         private void AddNurseBtn_Click_1(object sender, EventArgs e)
         {
@@ -157,26 +173,47 @@ namespace HospitalGUI.UserControls
             {
                 Nurse newNurse = new Nurse();
                 newNurse.Name = NameTbx.Text;
-                newNurse.Pesel = long.Parse(PeselTxb.Text);
-                newNurse.Password = PasswordTbx.Text;
-                newNurse.UserName = UserNameTbx.Text;
-                newNurse.Sex = (Sex)SexCbox.SelectedItem;
-                newNurse.Permission = (Permission)PermissionCbox.SelectedItem;
-                validator = new Validate();
-                if (validator.UserNameKeyValidate(newNurse.UserName, _context))
+                var peselValidate = true;
+                try
                 {
-                    _nurseConfiguration = new NurseService();
-                    _nurseConfiguration.Add(newNurse, _context);
+                    var pesel = long.Parse(PeselTxb.Text);
                 }
-                else
+                catch (Exception)
                 {
-                    string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
-                    string caption = "Error Detected in Input";
-                    MessageBoxButtons buttons = MessageBoxButtons.OK;
-                    DialogResult result;
-                    result = MessageBox.Show(message, caption, buttons);
+                    MessageBox.Show("PESEL powinien składać się z cyfr");
+                    PeselTxb.Focus();
+                    peselValidate = false;
                 }
-            }            
+                if (peselValidate)
+                {
+                    if (PeselTxb.Text.Length < 11 || PeselTxb.Text.Length > 11)
+                    {
+                        MessageBox.Show("PESEL powinien mieć długość 11 cyfr");
+                        PeselTxb.Focus();
+                    }
+                    newNurse.Pesel = long.Parse(PeselTxb.Text);
+                    newNurse.Password = PasswordTbx.Text;
+                    newNurse.UserName = UserNameTbx.Text;
+                    newNurse.Sex = (Sex)SexCbox.SelectedItem;
+                    newNurse.Permission = (Permission)PermissionCbox.SelectedItem;
+                    newNurse.EmployeeType = EmployeeType.nurse;
+                    validator = new Validate();
+                    if (validator.UserNameKeyValidate(newNurse.UserName, _context))
+                    {
+                        _nurseConfiguration = new NurseService();
+                        _nurseConfiguration.Add(newNurse, _context);
+                    }
+                    else
+                    {
+                        string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
+                        string caption = "Error Detected in Input";
+                        MessageBoxButtons buttons = MessageBoxButtons.OK;
+                        DialogResult result;
+                        UserNameTbx.Focus();
+                        result = MessageBox.Show(message, caption, buttons);
+                    }
+                }                
+            }
         }
 
         private bool IsNull()
@@ -188,6 +225,7 @@ namespace HospitalGUI.UserControls
                 MessageBoxButtons buttons = MessageBoxButtons.OK;
                 DialogResult result;
                 result = MessageBox.Show(message, caption, buttons);
+                NameTbx.Focus();
                 return false;
             }
             return true;

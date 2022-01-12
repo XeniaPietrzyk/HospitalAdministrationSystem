@@ -38,7 +38,7 @@ namespace Model.Controller
         public List<Admin> Update(Admin entity, Context context)
         {
             List<Admin> admin = context.Admins;
-            admin.RemoveAt(entity.Id);
+            Delete(entity.Id, context);
             admin.Add(entity);
             return admin;
         }

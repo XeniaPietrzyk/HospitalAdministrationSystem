@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace Model.Services
 {
+    //NOTE: do poprawki na przyszlosc - osobny interface dla Duty
     public class DutyService : IEmployeeConfiguration<Duty>
     {
         //NOTE: wlasciwie mozna by poprawic zwracanie List<Duty> na komunikat o udanej lub nieudanej akcji (?)
@@ -32,7 +33,7 @@ namespace Model.Services
         public List<Duty> Update(Duty entity, Context context)
         {
             List<Duty> duties = context.Duties;
-            duties.RemoveAt(entity.Id);
+            Delete(entity.Id, context);
             duties.Add(entity);
             return duties;
         }
@@ -40,7 +41,8 @@ namespace Model.Services
         public void Delete(int id, Context context)
         {
             List<Duty> duties = context.Duties;
-            duties.RemoveAt(id - 1);
+            var index = duties.FindIndex(x => x.Id == id);
+            duties.RemoveAt(index);
         }
 
         private int GenerateId(Context context)
@@ -66,8 +68,12 @@ namespace Model.Services
 
         public void AddShift(Duty entity, Shift shift, Context context)
         {
-            //TODO: Duty addShift
-            throw new System.NotImplementedException();
+            //znajduje dyzur po id z listy Duties
+            var duty = FindFirstByCondition(entity.Id, context);
+            //dodaje nowa zmiane do dyzuru
+            duty.Shifts.Add(shift);
+            //altualizuje dyzur
+            Update(duty, context);           
         }
     }
 }

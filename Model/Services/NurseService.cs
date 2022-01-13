@@ -11,24 +11,23 @@ namespace Model.Controller
     {
         public List<Nurse> Add(Nurse entity, Context context)
         {
-            //pobiera wszystkich lekarzy z bazy (plku xml)
+            //pobiera wszystkich pielegniarzy z bazy (plku xml)
             List<Nurse> nurses = context.Nurses;
-            //nadaje id nowemu lekarzowi
+            //nadaje id nowemu pielegniarzowi
             entity.Id = GenerateId(context);
             entity.Shift = new List<Shift>();
-            //dodaje lekarza do listy lekarzy
+            //dodaje piel. do listy piel.
             nurses.Add(entity);
-
-            //zwraca lekarza
-            //do przyszlych testow integracyjnych
+            //zwraca piel.
             return nurses;
         }
 
         public void Delete(int id, Context context)
         {
-            List<Nurse> nurse = context.Nurses;
-            var index = nurse.FindIndex(x => x.Id == id);
-            nurse.RemoveAt(index);
+            List<Nurse> nurses = context.Nurses;
+            var index = nurses.FindIndex(x => x.Id == id);
+            nurses.RemoveAt(index);
+            context.Nurses = nurses;
         }
 
 
@@ -46,38 +45,55 @@ namespace Model.Controller
 
         public List<Nurse> Update(Nurse entity, Context context)
         {
-            List<Nurse> nurse = context.Nurses;
-            nurse.RemoveAt(entity.Id);
-            nurse.Add(entity);
-            return nurse;
+            //pobiera z bazy wszystkich piel.
+            List<Nurse> nurses = context.Nurses;
+            //znajduje piel. o entity.id         
+            var oldNurse = FindFirstByCondition(entity.Id, context);
+            //znajduje index tego piel. na liscie wszystkich lekarzy
+            var index = nurses.IndexOf(oldNurse);
+            //nadpisuje: entity w miejscu oldPhysician
+            context.Nurses[index] = entity;
+            //zwraca liste wszystkich physicians
+            return nurses;
         }
 
-        public void AddShift(Nurse entity, Shift shift, Context context)
+        public Shift AddShift(Nurse entity, Shift shift, Context context)
         {
-            //dodaje zmiane do listy zmian pielegniarza
-            entity.Shift.Add(shift);
             //przypisuje pielegniarza (skonwertowana do medyka) do zmiany
             ConvertToMedic converter = new ConvertToMedic(entity);
-            Medic convertedMedic = converter.ConvertPhysician();
-            shift.Medic = convertedMedic;
-            //dodaje zmiane do listy wszystkich zmian
-            context.AllShifts.Add(shift);
+            //Medic convertedMedic = converter.ConvertNurse();
+            Medic converted = converter.ConvertNurse();
+            shift.Medic = converted;
+            //dodaje zmiane do listy zmian piel.
+            entity.Shift.Add(shift);
+            //aktualizacja piel.
+            Update(entity, context);
+            //zwraca zmiane
+            return shift;
         }
 
-        public List<Shift> GetShift(Context context)
+        public List<Shift> GetShifts(Nurse entity, Context context)
         {
             List<Shift> shifts = new List<Shift>();
-            foreach (var item in context.Nurses)
+            foreach (var item in entity.Shift)
             {
-                foreach (var singleShift in item.Shift)
-                {
-                    shifts.Add(singleShift);
-                }                
+                shifts.Add(item);
             }
             return shifts;
         }
 
-        public List<Shift> GetShifts(Nurse entity, Context context)
+        public List<Shift> DeleteShift(int id, Shift shift, Context context)
+        {
+            var entity = FindFirstByCondition(id, context);
+            var entityShifts = entity.Shift;
+            shift = entity.Shift.FirstOrDefault(x => x.Id == shift.Id);
+            var index = entityShifts.IndexOf(shift);
+            entity.Shift.RemoveAt(index);
+            Update(entity, context);
+            return entity.Shift;
+        }
+
+        public Shift GetShift(Nurse entitty, int shiftId, Context context)
         {
             throw new System.NotImplementedException();
         }

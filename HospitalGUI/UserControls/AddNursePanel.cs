@@ -198,7 +198,7 @@ namespace HospitalGUI.UserControls
                     newNurse.Permission = (Permission)PermissionCbox.SelectedItem;
                     newNurse.EmployeeType = EmployeeType.nurse;
                     validator = new Validate();
-                    if (validator.UserNameKeyValidate(newNurse.UserName, _context))
+                    if (validator.UserNameKeyValidate(newNurse.UserName, newNurse.Password, _context))
                     {
                         _nurseConfiguration = new NurseService();
                         _nurseConfiguration.Add(newNurse, _context);

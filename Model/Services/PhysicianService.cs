@@ -18,9 +18,7 @@ namespace Model.Controller
             entity.Shift = new List<Shift>();
             //dodaje lekarza do listy lekarzy
             physicians.Add(entity);
-
             //zwraca lekarza
-            //do przyszlych testow integracyjnych
             return physicians;
         }
 
@@ -29,16 +27,10 @@ namespace Model.Controller
             List<Physician> physicians = context.Physicians;
             var index = physicians.FindIndex(x => x.Id == id);
             physicians.RemoveAt(index);
+            context.Physicians = physicians;
         }
 
         public Physician FindFirstByCondition(int id, Context context)
-        {
-            Physician physicians = context.Physicians.FirstOrDefault(x => x.Id == id);
-            return physicians;
-        }
-
-        //TODO: powielenie, do usuniecia
-        public Physician Get(int id, Context context)
         {
             Physician physicians = context.Physicians.FirstOrDefault(x => x.Id == id);
             return physicians;
@@ -53,39 +45,52 @@ namespace Model.Controller
         {
             //pobiera z bazy wszystkich lekarzy
             List<Physician> physicians = context.Physicians;
-            //usuwa lekarza o entity.id
-            physicians.RemoveAt(entity.Id);
-            //dodaje lekarza do listy wszystkich lekarzy
-            physicians.Add(entity);
+            //znajduje lekarza o entity.id         
+            var oldPhysician = FindFirstByCondition(entity.Id, context);
+            //znajduje index tego lekarza na liscie wszystkich lekarzy
+            var index = physicians.IndexOf(oldPhysician);
+            //nadpisuje: entity w miejscu oldPhysician
+            context.Physicians[index] = entity;
+            //zwraca liste wszystkich physicians
             return physicians;
         }
 
-        public void AddShift(Physician entity, Shift shift, Context context)
+        public Shift AddShift(Physician entity, Shift shift, Context context)
         {
-            //dodaje zmiane do listy zmian lekarza
-            entity.Shift.Add(shift);
             //przypisuje lekarza (skonwertowanego do medyka) do zmiany
             ConvertToMedic converter = new ConvertToMedic(entity);
+            //Medic convertedMedic = converter.ConvertNurse();
             Medic convertedMedic = converter.ConvertPhysician();
             shift.Medic = convertedMedic;
-            //dodaje zmiane do listy wszystkich zmian
-            context.AllShifts.Add(shift);
+            //dodaje zmiane do listy zmian lekarza
+            entity.Shift.Add(shift);
+            //aktualizacja lekarzy
+            Update(entity, context);
+            //zwraca zmiane
+            return shift;
         }
-
-        public List<Shift> GetShift(Context context)
+        public List<Shift> GetShifts(Physician entity, Context context)
         {
             List<Shift> shifts = new List<Shift>();
-            foreach (var item in context.Physicians)
+            foreach (var item in entity.Shift)
             {
-                foreach (var singleShift in item.Shift)
-                {
-                    shifts.Add(singleShift);
-                }
+                shifts.Add(item);
             }
             return shifts;
         }
 
-        public List<Shift> GetShifts(Physician entity, Context context)
+        public List<Shift> DeleteShift(int id, Shift shift, Context context)
+        {
+            var entity = FindFirstByCondition(id, context);
+            var entityShifts = entity.Shift;
+            shift = entity.Shift.FirstOrDefault(x => x.Id == shift.Id);
+            var index = entityShifts.IndexOf(shift);
+            entity.Shift.RemoveAt(index);
+            Update(entity, context);
+            return entity.Shift;
+        }
+
+        public Shift GetShift(Physician entitty, int shiftId, Context context)
         {
             throw new System.NotImplementedException();
         }

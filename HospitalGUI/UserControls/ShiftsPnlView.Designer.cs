@@ -48,7 +48,6 @@ namespace HospitalGUI.UserControls
             this.AddShiftBtn = new System.Windows.Forms.Button();
             this.AddDutyBtn = new System.Windows.Forms.Button();
             this.DeleteShiftBtn = new System.Windows.Forms.Button();
-            this.EditShiftBtn = new System.Windows.Forms.Button();
             this.EditDutyBtn = new System.Windows.Forms.Button();
             this.ShiftPnl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ShiftsDataGrid)).BeginInit();
@@ -91,7 +90,6 @@ namespace HospitalGUI.UserControls
             this.ShiftPnl.Controls.Add(this.AddShiftBtn);
             this.ShiftPnl.Controls.Add(this.AddDutyBtn);
             this.ShiftPnl.Controls.Add(this.DeleteShiftBtn);
-            this.ShiftPnl.Controls.Add(this.EditShiftBtn);
             this.ShiftPnl.Controls.Add(this.EditDutyBtn);
             this.ShiftPnl.Controls.Add(this.label1);
             this.ShiftPnl.Controls.Add(this.Dutylbl);
@@ -138,6 +136,7 @@ namespace HospitalGUI.UserControls
             this.ShiftsDataGrid.RowTemplate.Height = 25;
             this.ShiftsDataGrid.Size = new System.Drawing.Size(556, 160);
             this.ShiftsDataGrid.TabIndex = 20;
+            this.ShiftsDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ShiftsDataGrid_CellClick);
             // 
             // DutyDataGrid
             // 
@@ -222,26 +221,13 @@ namespace HospitalGUI.UserControls
             this.DeleteShiftBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.DeleteShiftBtn.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.DeleteShiftBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(71)))), ((int)(((byte)(139)))));
-            this.DeleteShiftBtn.Location = new System.Drawing.Point(365, 551);
+            this.DeleteShiftBtn.Location = new System.Drawing.Point(470, 550);
             this.DeleteShiftBtn.Name = "DeleteShiftBtn";
             this.DeleteShiftBtn.Size = new System.Drawing.Size(80, 30);
             this.DeleteShiftBtn.TabIndex = 8;
             this.DeleteShiftBtn.Text = "Usuń";
             this.DeleteShiftBtn.UseVisualStyleBackColor = false;
-            // 
-            // EditShiftBtn
-            // 
-            this.EditShiftBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(229)))), ((int)(((byte)(239)))), ((int)(((byte)(252)))));
-            this.EditShiftBtn.FlatAppearance.BorderSize = 0;
-            this.EditShiftBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.EditShiftBtn.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.EditShiftBtn.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(71)))), ((int)(((byte)(139)))));
-            this.EditShiftBtn.Location = new System.Drawing.Point(470, 551);
-            this.EditShiftBtn.Name = "EditShiftBtn";
-            this.EditShiftBtn.Size = new System.Drawing.Size(80, 30);
-            this.EditShiftBtn.TabIndex = 7;
-            this.EditShiftBtn.Text = "Edytuj";
-            this.EditShiftBtn.UseVisualStyleBackColor = false;
+            this.DeleteShiftBtn.Click += new System.EventHandler(this.DeleteShiftBtn_Click);
             // 
             // EditDutyBtn
             // 
@@ -256,6 +242,7 @@ namespace HospitalGUI.UserControls
             this.EditDutyBtn.TabIndex = 6;
             this.EditDutyBtn.Text = "Edytuj";
             this.EditDutyBtn.UseVisualStyleBackColor = false;
+            this.EditDutyBtn.Click += new System.EventHandler(this.EditDutyBtn_Click);
             // 
             // ShiftsPnlView
             // 
@@ -279,7 +266,6 @@ namespace HospitalGUI.UserControls
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel ShiftPnl;
         private System.Windows.Forms.Button DeleteShiftBtn;
-        private System.Windows.Forms.Button EditShiftBtn;
         private System.Windows.Forms.Button EditDutyBtn;
         private System.Windows.Forms.Button AddShiftBtn;
         private System.Windows.Forms.Button AddDutyBtn;

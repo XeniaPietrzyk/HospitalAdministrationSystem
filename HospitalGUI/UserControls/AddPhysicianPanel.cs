@@ -183,7 +183,7 @@ namespace HospitalGUI.UserControls
                     newPhysician.Permission = (Permission)PermissionCbox.SelectedItem;
                     newPhysician.EmployeeType = EmployeeType.physician;
                     validator = new Validate();
-                    if (validator.UserNameKeyValidate(newPhysician.UserName, _context))
+                    if (validator.UserNameKeyValidate(newPhysician.UserName, newPhysician.Password, _context))
                     {
                         _physicianConfiguration = new PhysicianService();
                         _physicianConfiguration.Add(newPhysician, _context);

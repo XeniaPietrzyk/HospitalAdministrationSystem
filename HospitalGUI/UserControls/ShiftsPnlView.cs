@@ -10,11 +10,6 @@ using System.Windows.Forms;
 
 namespace HospitalGUI.UserControls
 {
-    //TODO: zaprogramowac dodawanie Shift z poziomu admina
-    //TODO: sprawdzic, czy dziala
-    //TODO: zrobic wyswietlanie dla employee
-    //TODO: zrobic dodawanie zmian dla employee
-    //TODO: przetestowac
     public partial class ShiftsPnlView : UserControl
     {
         private IEmployeeConfiguration<Duty> _dutyConfiguration = new DutyService();
@@ -34,10 +29,19 @@ namespace HospitalGUI.UserControls
             InitializeComponent();
             this.DutyDataGrid.DataSource = context.Duties;
             activeDuty = _dutyConfiguration.FindFirstByCondition(1, _context);
+            if (activeDuty != null)
+            {
+                if (activeDuty.Shifts.Count != 0)
+                {
+                    activeShift = activeDuty.Shifts[0];
+                    ShiftsDataGrid.DataSource = SetDataSource();
+                }
+            }
         }
 
         private readonly Context _context;
         private Duty activeDuty = new Duty();
+        private Shift activeShift = new Shift();
         private void AddDutyBtn_Click(object sender, System.EventArgs e)
         {
             Duty duty = new Duty();
@@ -62,25 +66,86 @@ namespace HospitalGUI.UserControls
 
         private void AddShiftBtn_Click(object sender, EventArgs e)
         {
-            Shift shift = new Shift();
-            //ustawia zmianie medyka
-            shift = setShiftValues(shift);
-            //dodaje zmiane do listy wszystkich zmian
-            _shiftConfiguration.Add(shift, _context);
-            //dodaje zmiane do dyzuru i aktualizuje liste wszystkich wdyzurow
-            _dutyConfiguration.AddShift(activeDuty, shift, _context);
-            //ustawia dane dla ShiftsGrid
+            if (activeDuty != null)
+            {
+                //ustawia zmianie parametry
+                activeShift = SetShiftValues(activeShift);
+                //dodaje zmiane do dyzuru i aktualizuje liste wszystkich dyzurow
+                AddShiftToDuty(activeDuty, activeShift);
+                //ustawia dane dla ShiftsGrid
+                ShiftsDataGrid.DataSource = SetDataSource();
+            }
+            else
+            {
+                string message = "Nie można dodać zmiany bez dyżuru. Dodaj nowy dyżur";
+                string caption = "Error Detected in Input";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result = MessageBox.Show(message, caption, buttons);
+            }
+        }
+
+        private void EditDutyBtn_Click(object sender, EventArgs e)
+        {
+            if (activeDuty!=null)
+            {
+                _dutyConfiguration.Update(activeDuty, _context);
+            }            
+        }
+
+        private void EditShiftBtn_Click(object sender, EventArgs e)
+        {
+            if (activeShift!=null)
+            {
+                _shiftConfiguration.Update(activeShift, _context);
+            }
+        }
+
+        //po kliknieciu elementu w DutyGrid
+        private void DutyDataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            //znajduje index wiersza w gridzie
+            var row = e.RowIndex;
+            //znajduje wartosc w kolumnie o nazwie "Id" w wierszu row
+            var dutyId = Convert.ToInt32(DutyDataGrid.Rows[row].Cells["Id"].Value.ToString());
+            //ustawia zmiennej activeDuty znalezione w liscie Duties duty (dyzur)
+            activeDuty = _dutyConfiguration.FindFirstByCondition(dutyId, _context);
+            //ustawia widok zmian w ShiftGrid 
             ShiftsDataGrid.DataSource = SetDataSource();
         }
 
-        private Shift setShiftValues(Shift shift)
+        //po kliknieciu elementu w ShiftGrid
+        private void ShiftsDataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            shift.ShiftDate = activeDuty.Term;
-            shift.Medic = new Medic();
-            var employeeId = Convert.ToInt32(EmpIdTbox.Text.ToString());
-            shift.Medic = validator.FindMedic(employeeId, _context);
-            //ustawia (dodaje) medykowi zmiane (shift)
-            SetMedicShift(employeeId, shift);
+            var row = e.RowIndex;
+            var shiftId = Convert.ToInt32(ShiftsDataGrid.Rows[row].Cells["ShiftId"].Value.ToString());
+            activeShift = _shiftConfiguration.FindFirstByCondition(shiftId, _context);
+        }
+
+        private Shift SetShiftValues(Shift shift)
+        {
+            //jesli taki shift nie istnieje, tworzy shift
+            var existingShift = _shiftConfiguration.FindFirstByCondition(shift.Id, _context);
+            if (existingShift == null)
+            {
+                //tworzy nowy shift i dodaje do AllShifts
+                //dzieki temu shift ma poprawne id
+                shift = _shiftConfiguration.Add(shift, _context);
+                //ustawia date i medyka dla shift
+                shift.ShiftDate = activeDuty.Term;
+                //ustawia zmianie medyka i
+                //ustawia (dodaje) medykowi zmiane (shift)
+                shift.Medic = new Medic();
+                var employeeId = Convert.ToInt32(EmpIdTbox.Text.ToString());
+                SetMedicShift(employeeId, shift);
+            }
+            //jesli shift istnieje
+            else
+            {
+                string message = "Medyk posiada już zmianę w tym dużurze.";
+                string caption = "Error Detected in Input";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result = MessageBox.Show(message, caption, buttons);
+            }
             return shift;
         }
 
@@ -90,12 +155,70 @@ namespace HospitalGUI.UserControls
             if (type == 2)
             {
                 var physician = _physicianConfiguration.FindFirstByCondition(id, _context);
-                _physicianConfiguration.AddShift(physician, shift, _context);
+                //sprawdza, czy istnieje juz taka zmiana
+                var exist = physician.Shift.Contains(shift);
+                //sprawdza, czy medyk nie ma zmiany poprzedniego dnia
+                var shiftBreakExist = validator.hasShiftBreak(physician, shift);
+                //jesli istnieje juz taka zmiana
+                if (exist)
+                {
+                    string message = "Medyk posiada już zmianę w tym dużurze.";
+                    string caption = "Error Detected in Input";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult result = MessageBox.Show(message, caption, buttons);
+                }
+                else if (shiftBreakExist)
+                {
+                    shift = _physicianConfiguration.AddShift(physician, shift, _context);
+                    //aktualizuje liste wszystkich zmian
+                    _shiftConfiguration.Update(shift, _context);
+                }
+                else
+                {
+                    string message = "Medyk powinien mieć co najmniej 24 godziny przerwy pomiędzy zmianami.";
+                    string caption = "Error Detected in Input";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult result = MessageBox.Show(message, caption, buttons);
+                }
+
+
             }
+            //analogicznie do powyzszego
             if (type == 3)
             {
                 var nurse = _nurseConfiguration.FindFirstByCondition(id, _context);
-                _nurseConfiguration.AddShift(nurse, shift, _context);
+                //sprawdza, czy istnieje juz taka zmiana
+                var shiftBreakExist = nurse.Shift.Contains(shift);
+                //jesli istnieje juz taka zmiana
+                if (shiftBreakExist)
+                {
+                    string message = "Medyk posiada już zmianę w tym dużurze.";
+                    string caption = "Error Detected in Input";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult result = MessageBox.Show(message, caption, buttons);
+                }
+                else if (shiftBreakExist)
+                {
+                    shift = _nurseConfiguration.AddShift(nurse, shift, _context);
+                    //aktualizuje liste wszystkich zmian
+                    _shiftConfiguration.Update(shift, _context);
+                }
+                else
+                {
+                    string message = "Medyk powinien mieć co najmniej 24 godziny przerwy pomiędzy zmianami.";
+                    string caption = "Error Detected in Input";
+                    MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    DialogResult result = MessageBox.Show(message, caption, buttons);
+                }
+            }
+        }
+        private void AddShiftToDuty(Duty duty, Shift shift)
+        {
+            //czy istnieje juz taka zmiana
+            var existingShift = _dutyConfiguration.GetShift(duty, shift.Id, _context);
+            if (existingShift == null)
+            {
+                _dutyConfiguration.AddShift(activeDuty, activeShift, _context);
             }
         }
 
@@ -108,15 +231,7 @@ namespace HospitalGUI.UserControls
         private List<Shift> GetShifts(Duty duty)
         {
             return _dutyConfiguration.GetShifts(duty, _context);
-        }
-
-        private void DutyDataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var row = e.RowIndex;
-            var dutyId = Convert.ToInt32(DutyDataGrid.Rows[row].Cells["Id"].Value.ToString());
-            activeDuty = _dutyConfiguration.FindFirstByCondition(dutyId, _context);
-            ShiftsDataGrid.DataSource = SetDataSource();
-        }
+        }              
 
         public List<ShiftSource> SetDataSource()
         {
@@ -217,5 +332,33 @@ namespace HospitalGUI.UserControls
                 }
             }
         }
+
+        private void DeleteShiftBtn_Click(object sender, EventArgs e)
+        {
+            //get id shifta
+            //znajdz shift w allShifts
+            var shift = _shiftConfiguration.FindFirstByCondition(activeShift.Id, _context);
+            //znajdz typ pracownika: pielegniarz czy lekarz
+            var employeeType = validator.FindEmployeeType(shift.Medic.Id, _context);
+            if (employeeType == 2)
+            {
+                //var employee = _physicianConfiguration.FindFirstByCondition(shift.Medic.Id, _context);
+                //usun shifta z pracownika
+                _physicianConfiguration.DeleteShift(shift.Medic.Id, shift, _context);
+            }
+            if (employeeType == 1)
+            {
+                //var employee = _nurseConfiguration.FindFirstByCondition(shift.Medic.Id, _context);
+                //usun shifta z pracownika
+                _nurseConfiguration.DeleteShift(shift.Medic.Id, shift, _context);
+
+            }
+            //usun shifta z all shifts
+            _shiftConfiguration.Delete(shift.Id, _context);
+            //usun shifta z Duty (?)
+            _dutyConfiguration.DeleteShift(activeDuty.Id, shift, _context);
+            //ustaw widok ShiftsGrid
+            ShiftsDataGrid.DataSource = SetDataSource();
+        }       
     }
 }

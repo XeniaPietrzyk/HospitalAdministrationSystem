@@ -33,27 +33,35 @@ namespace Model.Services
         public List<Duty> Update(Duty entity, Context context)
         {
             List<Duty> duties = context.Duties;
-            Delete(entity.Id, context);
-            duties.Add(entity);
+            var oldDuty = FindFirstByCondition(entity.Id, context);
+            //szuka indeksu tej zmiany w AllShifts
+            var index = duties.IndexOf(oldDuty);
+            //nadpisuje shift w miejscu oldShift
+            context.Duties[index] = entity;
+            //zwraca zmiany
             return duties;
         }
 
         public void Delete(int id, Context context)
         {
             List<Duty> duties = context.Duties;
-            var index = duties.FindIndex(x => x.Id == id);
-            duties.RemoveAt(index);
+            duties.RemoveAt(id);
         }
 
         private int GenerateId(Context context)
         {
-            var id = context.Duties.Count + 1;
+            var id = 1;
+            if (context.Duties.Count != 0)
+            {
+                id = context.Duties.Max(x => x.Id) + 1;
+            }
             return id;
         }
-        //nie potrzebuje pobierania wszystkich list zmian ze wszystkich duties
-        public List<Shift> GetShift(Context context)
+
+        public Shift GetShift(Duty duty, int shiftId, Context context)
         {
-            throw new System.NotImplementedException();
+            var shift = duty.Shifts.FirstOrDefault(x => x.Id == shiftId);
+            return shift;
         }
 
         public List<Shift> GetShifts(Duty duty, Context context)
@@ -66,14 +74,31 @@ namespace Model.Services
             return dutyShifts;
         }
 
-        public void AddShift(Duty entity, Shift shift, Context context)
+        public Shift AddShift(Duty entity, Shift shift, Context context)
         {
             //znajduje dyzur po id z listy Duties
             var duty = FindFirstByCondition(entity.Id, context);
             //dodaje nowa zmiane do dyzuru
             duty.Shifts.Add(shift);
             //altualizuje dyzur
-            Update(duty, context);           
+            Update(duty, context);
+            return shift;
+        }
+
+        public List<Shift> DeleteShift(int id, Shift shift, Context context)
+        {          
+            //znajdz duty, ktore posiada shift
+            var duty = FindFirstByCondition(id, context);
+            var dutyShifts = duty.Shifts;
+            //znajdz id shifta w duty
+            shift = dutyShifts.FirstOrDefault(x => x.Id == shift.Id);
+            var index = dutyShifts.IndexOf(shift);
+            //usun shift z duty
+            duty.Shifts.RemoveAt(index);
+            //zaktualizuj Duties
+            Update(duty, context);
+            //zwroc aktualna liste duty.shift
+            return duty.Shifts;
         }
     }
 }

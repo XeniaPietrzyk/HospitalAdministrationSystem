@@ -1,30 +1,23 @@
 ﻿//icons: <a href='https://www.freepik.com/vectors/icons'>Icons vector created by macrovector - www.freepik.com</a>
 
-using HospitalGUI.UserControls;
 using Model;
 using Model.Controller;
 using Model.Model;
 using Model.Service;
+using Model.Services;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace HospitalGUI
-{
-    //TODO:
-    // lista dyżurów : data, czas, pracownik
-    // pracownik : lista dyżurów
-    // pracownik: counter dyżurów
-    // wyświetlanie dyżurów w gridzie
-
-    // dodaj/usuń/edytuj dyżur
-
-    public partial class MainView : Form
+{    public partial class MainView : Form
     {
         private IEmployeeConfiguration<Admin> _adminConfiguration;
         private IEmployeeConfiguration<Nurse> _nurseConfiguration;
         private IEmployeeConfiguration<Physician> _physicianConfiguration;
+        private IShiftConfiguration<Medic> _shiftConfiguration;
+
         public MainView(Context context, Employee employee)
         {
             _context = context;
@@ -35,8 +28,7 @@ namespace HospitalGUI
                 InitializeAdminComponent();
             }
             employeesPnlView1.Hide();
-            //TODO: czy to jest potrzebne?
-            SetPositionIcon(employee);            
+            SetPositionIcon(employee);
 
             NavMarkPnl.Height = NavShiftsBtn.Height;
             NavMarkPnl.Top = NavShiftsBtn.Top;
@@ -48,7 +40,7 @@ namespace HospitalGUI
         }
 
         private Employee _employee { get; set; }
-        private readonly Context _context;      
+        private readonly Context _context;
         private IQueryable<Employee> employeeList { get; set; }
 
         public string GetEmployeeType(Employee employee)
@@ -101,7 +93,7 @@ namespace HospitalGUI
             NavEmplBtn.BackColor = Color.FromArgb(235, 243, 250);
             if (GetEmployeeType(_employee) == "Admin")
             {
-                               
+
             }
             employeesPnlView1.Hide();
             shiftsPnlView1.Show();
@@ -119,12 +111,12 @@ namespace HospitalGUI
             //GetNurseList();
             shiftsPnlView1.Hide();
             employeesPnlView1.Show();
-         }
+        }
 
         private List<Employee> GetAdminList()
         {
             _adminConfiguration = new AdminService();
-            employeeList = _adminConfiguration.GetAll(_context);            
+            employeeList = _adminConfiguration.GetAll(_context);
             return employeeList.ToList();
         }
 
@@ -143,10 +135,8 @@ namespace HospitalGUI
         }
         public List<Shift> GetAllShifts()
         {
-            _physicianConfiguration = new PhysicianService();
-            List<Shift> allShifts = _physicianConfiguration.GetShift(_context);
-            _nurseConfiguration = new NurseService();
-            allShifts.AddRange(_nurseConfiguration.GetShift(_context));
+            _shiftConfiguration = new ShiftService();
+            var allShifts = _shiftConfiguration.GetAll(_context);
             return allShifts.ToList();
         }
 

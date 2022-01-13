@@ -1,4 +1,5 @@
 ﻿using Model.Model;
+using Model.Service;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,43 +7,56 @@ namespace Model.Services
 {
     public class ShiftService : IShiftConfiguration<Medic>
     {
-        public List<Shift> Add(Shift entity, Context context)
+        public Shift Add(Shift entity, Context context)
         {
             List<Shift> shifts = context.AllShifts;
             entity.Id = GenerateId(context);
             shifts.Add(entity);
             context.AllShifts = shifts;
-            return shifts;
+            return entity;
         }
 
-        public IQueryable<Duty> GetAll(Context context)
+        public IQueryable<Shift> GetAll(Context context)
         {
-            return context.Duties.AsQueryable();
+            return context.AllShifts.AsQueryable();
         }
 
         public Shift FindFirstByCondition(int id, Context context)
         {
-            Shift duty = context.AllShifts.FirstOrDefault(x => x.Id == id);
-            return duty;
+            Shift shift = context.AllShifts.FirstOrDefault(x => x.Id == id);
+            return shift;
         }
 
         public List<Shift> Update(Shift shift, Context context)
         {
-            List<Shift> duties = context.AllShifts;
-            duties.RemoveAt(shift.Id);
-            duties.Add(shift);
-            return duties;
+            //pobiera z bazy wszystkie zmiany
+            List<Shift> shifts = context.AllShifts;
+            //znajduje zmiane o shift.Id
+            var oldShift = FindFirstByCondition(shift.Id, context);
+            //szuka indeksu tej zmiany w AllShifts
+            var index = shifts.IndexOf(oldShift);
+            //nadpisuje shift w miejscu oldShift
+            context.AllShifts[index] = shift;
+            //zwraca zmiany
+            return shifts;
         }
 
         public void Delete(int id, Context context)
         {
-            List<Shift> duties = context.AllShifts;
-            duties.RemoveAt(id - 1);
+            List<Shift> shifts = context.AllShifts;
+            var shift = FindFirstByCondition(id, context);
+            var index = shifts.IndexOf(shift);
+            shifts.RemoveAt(index);
+            context.AllShifts = shifts;
         }
 
         private int GenerateId(Context context)
         {
-            var id = context.AllShifts.Count + 1;
+            var id = 1;
+            if (context.AllShifts.Count!=0)
+            {
+                id = context.AllShifts.Max(x => x.Id) + 1;
+            }
             return id;
         }
 

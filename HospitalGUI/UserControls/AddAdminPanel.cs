@@ -159,7 +159,7 @@ namespace HospitalGUI.UserControls
                     newAdmin.Permission = (Permission)PermissionCbox.SelectedItem;
                     newAdmin.EmployeeType = EmployeeType.admin;
                     validator = new Validate();
-                    if (validator.UserNameKeyValidate(newAdmin.UserName, _context))
+                    if (validator.UserNameKeyValidate(newAdmin.UserName, newAdmin.Password, _context))
                     {
                         _adminConfiguration = new AdminService();
                         _adminConfiguration.Add(newAdmin, _context);

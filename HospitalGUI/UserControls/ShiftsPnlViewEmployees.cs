@@ -10,22 +10,22 @@ using System.Windows.Forms;
 
 namespace HospitalGUI.UserControls
 {
-    public partial class ShiftsPnlView : UserControl
+    public partial class ShiftsPnlViewEmployees : UserControl
     {
         private IEmployeeConfiguration<Duty> _dutyConfiguration = new DutyService();
         private IShiftConfiguration<Medic> _shiftConfiguration = new ShiftService();
-        private IEmployeeConfiguration<Admin> _adminConfiguration = new AdminService();
         private IEmployeeConfiguration<Physician> _physicianConfiguration = new PhysicianService();
         private IEmployeeConfiguration<Nurse> _nurseConfiguration = new NurseService();
         private Validate validator = new Validate();
 
-        public ShiftsPnlView()
+        public ShiftsPnlViewEmployees()
         {
             InitializeComponent();
         }
-        public ShiftsPnlView(Context context)
+        public ShiftsPnlViewEmployees(Medic medic, Context context)
         {
             _context = context;
+            activeMedic = medic;
             InitializeComponent();
             this.DutyDataGrid.DataSource = context.Duties;
             activeDuty = _dutyConfiguration.FindFirstByCondition(1, _context);
@@ -42,28 +42,7 @@ namespace HospitalGUI.UserControls
         private readonly Context _context;
         private Duty activeDuty = new Duty();
         private Shift activeShift = new Shift();
-        private void AddDutyBtn_Click(object sender, System.EventArgs e)
-        {
-            Duty duty = new Duty();
-            duty = setDutyTerm(duty);
-            _dutyConfiguration = new DutyService();
-            _dutyConfiguration.Add(duty, _context);
-            DutyDataGrid.DataSource = GetDuties();
-            //wyswietl wszystkie zmiany (shifts) dla danego dyzuru(duty)
-            ShiftsDataGrid.DataSource = GetShifts(duty);
-            activeDuty = duty;
-        }
-
-        private Duty setDutyTerm(Duty duty)
-        {
-            var day = Convert.ToInt32(DutyDayTbox.Text.ToString());
-            var month = Convert.ToInt32(DutyMonthTbx.Text.ToString());
-            var year = Convert.ToInt32(YearTbx.Text.ToString());
-            DateTime dutyDate = new DateTime(year, month, day);
-            duty.Term = dutyDate;
-            return duty;
-        }
-
+        private Medic activeMedic;
         private void AddShiftBtn_Click(object sender, EventArgs e)
         {
             activeShift = new Shift();
@@ -83,14 +62,6 @@ namespace HospitalGUI.UserControls
                 MessageBoxButtons buttons = MessageBoxButtons.OK;
                 DialogResult result = MessageBox.Show(message, caption, buttons);
             }
-        }
-
-        private void EditDutyBtn_Click(object sender, EventArgs e)
-        {
-            if (activeDuty!=null)
-            {
-                _dutyConfiguration.Update(activeDuty, _context);
-            }            
         }
 
         private void EditShiftBtn_Click(object sender, EventArgs e)
@@ -135,9 +106,8 @@ namespace HospitalGUI.UserControls
                 shift.ShiftDate = activeDuty.Term;
                 //ustawia zmianie medyka i
                 //ustawia (dodaje) medykowi zmiane (shift)
-                shift.Medic = new Medic();
-                var employeeId = Convert.ToInt32(EmpIdTbox.Text.ToString());
-                SetMedicShift(employeeId, shift);
+                shift.Medic = activeMedic;
+                SetMedicShift(activeMedic.Id, shift);
             }
             //jesli shift istnieje
             else
@@ -181,8 +151,6 @@ namespace HospitalGUI.UserControls
                     MessageBoxButtons buttons = MessageBoxButtons.OK;
                     DialogResult result = MessageBox.Show(message, caption, buttons);
                 }
-
-
             }
             //analogicznie do powyzszego
             if (type == 3)
@@ -225,11 +193,11 @@ namespace HospitalGUI.UserControls
             }
         }
 
-        private List<Duty> GetDuties()
-        {
-            IQueryable<Duty> duties = _dutyConfiguration.GetAll(_context);
-            return duties.ToList();
-        }
+        //private List<Duty> GetDuties()
+        //{
+        //    IQueryable<Duty> duties = _dutyConfiguration.GetAll(_context);
+        //    return duties.ToList();
+        //}
 
         private List<Shift> GetShifts(Duty duty)
         {
@@ -272,68 +240,6 @@ namespace HospitalGUI.UserControls
             }
 
             return shiftSource;
-        }
-
-        private void EmpIdTbox_TextChanged(object sender, EventArgs e)
-        {
-            MedicSpecTbox.Clear();
-            if (EmpIdTbox.Text.ToString() != "")
-            {
-                var text = Convert.ToInt32(EmpIdTbox.Text.ToString());
-                if (text.GetType().ToString() == "System.Int32")
-                {
-                    var type = validator.FindEmployeeType(text, _context);
-                    if (type == 0)
-                    {
-                        string message = "Nie istnieje pracownik o podanym id";
-                        string caption = "Error Detected in Input";
-                        MessageBoxButtons buttons = MessageBoxButtons.OK;
-                        DialogResult result;
-                        result = MessageBox.Show(message, caption, buttons);
-                    }
-                    if (type == 1)
-                    {
-                        string message = "Szukany pracownik to admin.";
-                        string caption = "Error Detected in Input";
-                        MessageBoxButtons buttons = MessageBoxButtons.OK;
-                        DialogResult result;
-                        result = MessageBox.Show(message, caption, buttons);
-
-                        var admin = _adminConfiguration.FindFirstByCondition(text, _context);
-                        MedicNameTbox.Text = admin.Name;
-
-                    }
-                    if (type == 2)
-                    {
-                        var physician = _physicianConfiguration.FindFirstByCondition(text, _context);
-                        MedicNameTbox.Text = physician.Name;
-                        MedicSpecTbox.Text = physician.Specialization.ToString();
-                        if (physician.Sex == Model.Helpers.Sex.female)
-                        {
-                            MedicTypeTbox.Text = "lekarka";
-                        }
-                        else MedicTypeTbox.Text = "lekarz";
-                    }
-                    if (type == 3)
-                    {
-                        var nurse = _nurseConfiguration.FindFirstByCondition(text, _context);
-                        MedicNameTbox.Text = nurse.Name;
-                        if (nurse.Sex == Model.Helpers.Sex.female)
-                        {
-                            MedicTypeTbox.Text = "pielęgniarka";
-                        }
-                        else MedicTypeTbox.Text = "pielęgniarz";
-                    }
-                }
-                else
-                {
-                    string message = "Wprowadzono błędny typ danych. Wpisz numer.";
-                    string caption = "Error Detected in Input";
-                    MessageBoxButtons buttons = MessageBoxButtons.OK;
-                    DialogResult result;
-                    result = MessageBox.Show(message, caption, buttons);
-                }
-            }
         }
 
         private void DeleteShiftBtn_Click(object sender, EventArgs e)

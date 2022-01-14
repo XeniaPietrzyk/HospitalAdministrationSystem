@@ -5,6 +5,10 @@ namespace Model.Helpers
 {
     public class ConvertToMedic
     {
+        public ConvertToMedic(Employee employee)
+        {
+            this.employee = employee;
+        }
         public ConvertToMedic(Nurse nurse, Physician physician)
         {
             this.nurse = nurse;
@@ -23,7 +27,19 @@ namespace Model.Helpers
 
         private Nurse nurse { get; set; }
         private Physician physician { get; set; }
+        private Employee employee { get; set; }
 
+        public Medic ConvertEmployee()
+        {
+            Medic medic = new Medic();
+            medic.Id = employee.Id;
+            medic.Name = employee.Name;
+            medic.Pesel = employee.Pesel;
+            medic.Sex = employee.Sex;
+            medic.Permission = employee.Permission;
+            medic.EmployeeType = employee.EmployeeType;
+            return medic;
+        }
         public Medic ConvertNurse()
         {
             Medic medic = new Medic();

@@ -2,6 +2,7 @@
 
 using Model;
 using Model.Controller;
+using Model.Helpers;
 using Model.Model;
 using Model.Service;
 using Model.Services;
@@ -11,23 +12,35 @@ using System.Linq;
 using System.Windows.Forms;
 
 namespace HospitalGUI
-{    public partial class MainView : Form
+{
+    public partial class MainView : Form
     {
         private IEmployeeConfiguration<Admin> _adminConfiguration;
         private IEmployeeConfiguration<Nurse> _nurseConfiguration;
         private IEmployeeConfiguration<Physician> _physicianConfiguration;
         private IShiftConfiguration<Medic> _shiftConfiguration;
 
+        //TODO: widok dla admina i widok dla medykow
+        //jebia sie te widoki i nic nie widac
         public MainView(Context context, Employee employee)
         {
             _context = context;
             _employee = employee;
+            ConvertToMedic();
             InitializeComponent();
-            if (GetEmployeeType(employee) == "Admin")
+            if (_employee.EmployeeType == Model.Helpers.EmployeeType.admin)
             {
                 InitializeAdminComponent();
+                employeesPnlView1.Hide();
+                shiftsPnlViewEmployees1.Hide();
             }
-            employeesPnlView1.Hide();
+            else
+            {
+                employeesPnlView1.Hide();
+                shiftsPnlView1.Hide();
+                shiftsPnlViewEmployees1.Show();
+            }
+
             SetPositionIcon(employee);
 
             NavMarkPnl.Height = NavShiftsBtn.Height;
@@ -39,9 +52,16 @@ namespace HospitalGUI
             NameLbl.Text = employee.Name;
         }
 
-        private Employee _employee { get; set; }
+        private Employee _employee;
         private readonly Context _context;
+        private Medic _medic;
         private IQueryable<Employee> employeeList { get; set; }
+
+        private void ConvertToMedic()
+        {
+            ConvertToMedic converter = new ConvertToMedic(_employee);
+            _medic = converter.ConvertEmployee();
+        }
 
         public string GetEmployeeType(Employee employee)
         {
@@ -91,12 +111,17 @@ namespace HospitalGUI
             NavMarkPnl.Left = NavShiftsBtn.Left;
             NavShiftsBtn.BackColor = Color.FromArgb(248, 252, 255);
             NavEmplBtn.BackColor = Color.FromArgb(235, 243, 250);
-            if (GetEmployeeType(_employee) == "Admin")
-            {
 
-            }
             employeesPnlView1.Hide();
-            shiftsPnlView1.Show();
+            if (_employee.EmployeeType == Model.Helpers.EmployeeType.admin)
+            {
+                shiftsPnlViewEmployees1.Hide();
+                shiftsPnlView1.Show();
+            }
+            if (_employee.EmployeeType == Model.Helpers.EmployeeType.physician || _employee.EmployeeType == Model.Helpers.EmployeeType.physician)
+            {
+                shiftsPnlViewEmployees1.Show();
+            }
         }
 
         private void NavEmplBtn_Click(object sender, System.EventArgs e)
@@ -106,9 +131,6 @@ namespace HospitalGUI
             NavMarkPnl.Left = NavEmplBtn.Left;
             NavEmplBtn.BackColor = Color.FromArgb(248, 252, 255);
             NavShiftsBtn.BackColor = Color.FromArgb(235, 243, 250);
-            //GetAdminList();
-            //GetPhysicianList();
-            //GetNurseList();
             shiftsPnlView1.Hide();
             employeesPnlView1.Show();
         }

@@ -54,12 +54,15 @@ namespace HospitalGUI
             this.NurseGridViewBtn = new System.Windows.Forms.Button();
             this.PhysGridViewBtn = new System.Windows.Forms.Button();
             this.AdminGridViewBtn = new System.Windows.Forms.Button();
-            this.shiftsPnlView1 = new HospitalGUI.UserControls.ShiftsPnlView(_context);
+            this.viewPanel = new System.Windows.Forms.Panel();
             this.employeesPnlView1 = new HospitalGUI.UserControls.EmployeesPnlView(_context, _employee);
+            this.shiftsPnlView1 = new HospitalGUI.UserControls.ShiftsPnlView(_context);
+            this.shiftsPnlViewEmployees1 = new HospitalGUI.UserControls.ShiftsPnlViewEmployees(_medic, _context);
             this.LeftMenuPnl.SuspendLayout();
             this.UserMenuPnl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.EmployeeGrid)).BeginInit();
+            this.viewPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // LeftMenuPnl
@@ -203,21 +206,21 @@ namespace HospitalGUI
             // 
             this.EmployeeGrid.Location = new System.Drawing.Point(0, 0);
             this.EmployeeGrid.Name = "EmployeeGrid";
-            this.EmployeeGrid.Size = new System.Drawing.Size(240, 150);
+            this.EmployeeGrid.Size = new System.Drawing.Size(680, 590);
             this.EmployeeGrid.TabIndex = 0;
             // 
             // NurseGridViewBtn
             // 
             this.NurseGridViewBtn.Location = new System.Drawing.Point(0, 0);
             this.NurseGridViewBtn.Name = "NurseGridViewBtn";
-            this.NurseGridViewBtn.Size = new System.Drawing.Size(75, 23);
+            this.NurseGridViewBtn.Size = new System.Drawing.Size(680, 590);
             this.NurseGridViewBtn.TabIndex = 0;
             // 
             // PhysGridViewBtn
             // 
             this.PhysGridViewBtn.Location = new System.Drawing.Point(0, 0);
             this.PhysGridViewBtn.Name = "PhysGridViewBtn";
-            this.PhysGridViewBtn.Size = new System.Drawing.Size(75, 23);
+            this.PhysGridViewBtn.Size = new System.Drawing.Size(680, 590);
             this.PhysGridViewBtn.TabIndex = 0;
             // 
             // AdminGridViewBtn
@@ -227,21 +230,39 @@ namespace HospitalGUI
             this.AdminGridViewBtn.Size = new System.Drawing.Size(75, 23);
             this.AdminGridViewBtn.TabIndex = 0;
             // 
-            // shiftsPnlView1
+            // viewPanel
             // 
-            this.shiftsPnlView1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
-            this.shiftsPnlView1.Location = new System.Drawing.Point(245, 0);
-            this.shiftsPnlView1.Name = "shiftsPnlView1";
-            this.shiftsPnlView1.Size = new System.Drawing.Size(600, 621);
-            this.shiftsPnlView1.TabIndex = 1;
+            this.viewPanel.Controls.Add(this.shiftsPnlViewEmployees1);
+            this.viewPanel.Controls.Add(this.shiftsPnlView1);
+            this.viewPanel.Controls.Add(this.employeesPnlView1);
+            this.viewPanel.Location = new System.Drawing.Point(206, 12);
+            this.viewPanel.Name = "viewPanel";
+            this.viewPanel.Size = new System.Drawing.Size(682, 599);
+            this.viewPanel.TabIndex = 1;
             // 
             // employeesPnlView1
             // 
             this.employeesPnlView1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
-            this.employeesPnlView1.Location = new System.Drawing.Point(225, 11);
+            this.employeesPnlView1.Location = new System.Drawing.Point(0,0);
             this.employeesPnlView1.Name = "employeesPnlView1";
-            this.employeesPnlView1.Size = new System.Drawing.Size(650, 600);
-            this.employeesPnlView1.TabIndex = 2;
+            this.employeesPnlView1.Size = new System.Drawing.Size(682, 599);
+            this.employeesPnlView1.TabIndex = 0;
+            // 
+            // shiftsPnlView1
+            // 
+            this.shiftsPnlView1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
+            this.shiftsPnlView1.Location = new System.Drawing.Point(0, 0);
+            this.shiftsPnlView1.Name = "shiftsPnlView1";
+            this.shiftsPnlView1.Size = new System.Drawing.Size(682, 599);
+            this.shiftsPnlView1.TabIndex = 1;
+            // 
+            // shiftsPnlViewEmployees1
+            // 
+            this.shiftsPnlViewEmployees1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
+            this.shiftsPnlViewEmployees1.Location = new System.Drawing.Point(0, 0);
+            this.shiftsPnlViewEmployees1.Name = "shiftsPnlViewEmployees1";
+            this.shiftsPnlViewEmployees1.Size = new System.Drawing.Size(682, 599);
+            this.shiftsPnlViewEmployees1.TabIndex = 2;
             // 
             // MainView
             // 
@@ -249,8 +270,7 @@ namespace HospitalGUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(900, 623);
-            this.Controls.Add(this.employeesPnlView1);
-            this.Controls.Add(this.shiftsPnlView1);
+            this.Controls.Add(this.viewPanel);
             this.Controls.Add(this.LeftMenuPnl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MainView";
@@ -260,6 +280,7 @@ namespace HospitalGUI
             this.UserMenuPnl.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.EmployeeGrid)).EndInit();
+            this.viewPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -285,6 +306,7 @@ namespace HospitalGUI
             this.NavEmplBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.NavEmplBtn.UseVisualStyleBackColor = true;
             this.NavEmplBtn.Click += new System.EventHandler(this.NavEmplBtn_Click);
+          
         }
         #endregion
 
@@ -307,6 +329,8 @@ namespace HospitalGUI
         private System.Windows.Forms.Button NurseGridViewBtn;
         private System.Windows.Forms.Button PhysGridViewBtn;
         private System.Windows.Forms.Button AdminGridViewBtn;
+        private Panel viewPanel;
+        private UserControls.ShiftsPnlViewEmployees shiftsPnlViewEmployees1;
         private UserControls.ShiftsPnlView shiftsPnlView1;
         private UserControls.EmployeesPnlView employeesPnlView1;
     }

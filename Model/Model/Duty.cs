@@ -8,7 +8,7 @@ namespace Model.Model
 {
     public class Duty
     {
-        int Id { get; set; }
+        public int Id { get; set; }
         public DateTime Term { get; set; }
         public List<Shift> Shifts { get; set; }
     }

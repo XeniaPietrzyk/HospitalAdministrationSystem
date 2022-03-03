@@ -1,11 +1,12 @@
 ﻿using Model.Model;
 using Model.Service;
+using Model.Services;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Model.Controller
 {
-    public class AdminService : IEmployeeConfiguration<Admin>
+    public class AdminController : Validate, IEmployeeController<Admin>
     {
 
         public IQueryable<Admin> GetAll(Context context)
@@ -28,6 +29,7 @@ namespace Model.Controller
         public List<Admin> Add(Admin entity, Context context)
         {
             List<Admin> admin = context.Admins;
+            entity.Id = GenerateId(context);
             admin.Add(entity);
             return admin;
 
@@ -36,33 +38,36 @@ namespace Model.Controller
         public List<Admin> Update(Admin entity, Context context)
         {
             List<Admin> admin = context.Admins;
-            admin.RemoveAt(entity.Id);
+            Delete(entity.Id, context);
             admin.Add(entity);
             return admin;
         }
 
-        public void Delete(Admin entity, Context context)
+        public void Delete(int id, Context context)
         {
             List<Admin> admin = context.Admins;
-            admin.RemoveAt(entity.Id);
+            var index = admin.FindIndex(x => x.Id == id);
+            admin.RemoveAt(index);
         }
 
-        public void AddShift(Admin entity, Shift shift, Context context)
+        //nie potrzebuje tych funkcji, ponbiewaz admin nie ma swoich Shift
+        //NOTE: do rozwazenia stworzenie IAdminConfiguration
+        public Shift AddShift(Admin entity, Shift shift, Context context)
         {
             throw new System.NotImplementedException();
         }
 
-        public List<Shift> GetShift(Context context)
+        public List<Shift> GetShifts(Admin entity, Context context)
         {
             throw new System.NotImplementedException();
         }
 
-        public void AddShifts(List<Shift> shifts, Context context)
+        public Shift GetShift(Admin entitty, int shiftId, Context context)
         {
             throw new System.NotImplementedException();
         }
 
-        public List<Shift> GetShift(Admin entity, Shift shift, Context context)
+        public List<Shift> DeleteShift(int id, Shift shift, Context context)
         {
             throw new System.NotImplementedException();
         }

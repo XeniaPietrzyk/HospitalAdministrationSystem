@@ -36,18 +36,18 @@ namespace HospitalGUI.UserControls
             this.AdminGridViewBtn = new System.Windows.Forms.Button();
             this.PhysGridViewBtn = new System.Windows.Forms.Button();
             this.NurseGridViewBtn = new System.Windows.Forms.Button();
-            this.addAdminPanel1 = new HospitalGUI.UserControls.AddAdminPanel(_context);
-            this.addNursePanel1 = new HospitalGUI.UserControls.AddNursePanel(_context);
             this.addPhysicianPanel1 = new HospitalGUI.UserControls.AddPhysicianPanel(_context);
+            this.addNursePanel1 = new HospitalGUI.UserControls.AddNursePanel(_context);
+            this.addAdminPanel1 = new HospitalGUI.UserControls.AddAdminPanel(_context);
             this.EmployeesPnl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EmployeeGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // EmployeesPnl
             // 
-            this.EmployeesPnl.Controls.Add(this.addPhysicianPanel1);
-            this.EmployeesPnl.Controls.Add(this.addNursePanel1);
             this.EmployeesPnl.Controls.Add(this.addAdminPanel1);
+            this.EmployeesPnl.Controls.Add(this.addNursePanel1);
+            this.EmployeesPnl.Controls.Add(this.addPhysicianPanel1);
             this.EmployeesPnl.Controls.Add(this.DeleteBtn);
             this.EmployeesPnl.Controls.Add(this.UpdateBtn);
             this.EmployeesPnl.Controls.Add(this.EmployeeGrid);
@@ -72,6 +72,7 @@ namespace HospitalGUI.UserControls
             this.DeleteBtn.TabIndex = 5;
             this.DeleteBtn.Text = "Usuń";
             this.DeleteBtn.UseVisualStyleBackColor = false;
+            this.DeleteBtn.Click += new System.EventHandler(this.DeleteBtn_Click);
             // 
             // UpdateBtn
             // 
@@ -97,6 +98,7 @@ namespace HospitalGUI.UserControls
             this.EmployeeGrid.RowTemplate.Height = 25;
             this.EmployeeGrid.Size = new System.Drawing.Size(615, 224);
             this.EmployeeGrid.TabIndex = 3;
+            this.EmployeeGrid.ParentChanged += new System.EventHandler(this.EmployeeGrid_ParentChanged);
             // 
             // AdminGridViewBtn
             // 
@@ -134,29 +136,29 @@ namespace HospitalGUI.UserControls
             this.NurseGridViewBtn.UseVisualStyleBackColor = true;
             this.NurseGridViewBtn.Click += new System.EventHandler(this.NurseGridViewBtn_Click);
             // 
-            // addAdminPanel2
+            // addPhysicianPanel2
             // 
-            this.addAdminPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
-            this.addAdminPanel1.Location = new System.Drawing.Point(8, 130);
-            this.addAdminPanel1.Name = "addAdminPanel1";
-            this.addAdminPanel1.Size = new System.Drawing.Size(610, 155);
-            this.addAdminPanel1.TabIndex = 6;
-            // a
+            this.addPhysicianPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
+            this.addPhysicianPanel1.Location = new System.Drawing.Point(5, 134);
+            this.addPhysicianPanel1.Name = "addPhysicianPanel1";
+            this.addPhysicianPanel1.Size = new System.Drawing.Size(610, 155);
+            this.addPhysicianPanel1.TabIndex = 6;
+            // 
             // addNursePanel2
             // 
             this.addNursePanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
-            this.addNursePanel1.Location = new System.Drawing.Point(8, 130);
+            this.addNursePanel1.Location = new System.Drawing.Point(5, 134);
             this.addNursePanel1.Name = "addNursePanel1";
             this.addNursePanel1.Size = new System.Drawing.Size(610, 155);
             this.addNursePanel1.TabIndex = 7;
             // 
-            // addPhysicianPanel2
+            // addAdminPanel2
             // 
-            this.addPhysicianPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
-            this.addPhysicianPanel1.Location = new System.Drawing.Point(8, 130);
-            this.addPhysicianPanel1.Name = "addPhysicianPanel1";
-            this.addPhysicianPanel1.Size = new System.Drawing.Size(610, 155);
-            this.addPhysicianPanel1.TabIndex = 8;
+            this.addAdminPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
+            this.addAdminPanel1.Location = new System.Drawing.Point(5, 134);
+            this.addAdminPanel1.Name = "addAdminPanel1";
+            this.addAdminPanel1.Size = new System.Drawing.Size(610, 155);
+            this.addAdminPanel1.TabIndex = 8;
             // 
             // EmployeesPnlView
             // 

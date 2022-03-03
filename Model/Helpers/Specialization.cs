@@ -11,6 +11,7 @@ namespace Model.Helpers
         cardiology, 
         urology, 
         neurology,
-        laryngology
+        laryngology,
+        none
     }
 }

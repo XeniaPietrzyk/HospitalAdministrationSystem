@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Model.Helpers
 {
-    public class PeselValidation
+    public enum EmployeeType
     {
-
+        admin,
+        physician,
+        nurse
     }
 }

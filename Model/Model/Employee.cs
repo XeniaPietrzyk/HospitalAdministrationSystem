@@ -20,5 +20,7 @@ namespace Model
         public string Password { get; set; }
         [DataMember]
         public Permission Permission { get; set; }
+
+        public EmployeeType EmployeeType {get;set;}
     }
 }

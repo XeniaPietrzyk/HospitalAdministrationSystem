@@ -3,6 +3,7 @@ using Model.Controller;
 using Model.Helpers;
 using Model.Model;
 using Model.Service;
+using Model.Services;
 using System;
 using System.Windows.Forms;
 
@@ -10,7 +11,9 @@ namespace HospitalGUI.UserControls
 {
     public partial class AddAdminPanel : UserControl
     {
-        private IEmployeeConfiguration<Admin> _adminConfiguration;
+        private IEmployeeController<Admin> _adminConfiguration;
+
+        private Validate validator;
 
         private TextBox PasswordTbx;
         private TextBox UserNameTbx;
@@ -127,15 +130,65 @@ namespace HospitalGUI.UserControls
 
         private void AddAdminBtn_Click(object sender, EventArgs e)
         {
-            Admin newAdmin = new Admin();
-            newAdmin.Name = NameTbx.Text;
-            newAdmin.Pesel = long.Parse(PeselTxb.Text);
-            newAdmin.Password = PasswordTbx.Text;
-            newAdmin.UserName = UserNameTbx.Text;
-            newAdmin.Sex = (Sex)SexCbox.SelectedItem;
-            newAdmin.Permission = (Permission)PermissionCbox.SelectedItem;
-            _adminConfiguration = new AdminService();
-            _adminConfiguration.Add(newAdmin, _context);
+            if (IsNull())
+            {
+                Admin newAdmin = new Admin();
+                newAdmin.Name = NameTbx.Text;
+                var peselValidate = true;
+                try
+                {
+                    var pesel = long.Parse(PeselTxb.Text);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("PESEL powinien składać się z cyfr");
+                    PeselTxb.Focus();
+                    peselValidate = false;
+                }
+                if (peselValidate)
+                {
+                    if (PeselTxb.Text.Length < 11 || PeselTxb.Text.Length > 11)
+                    {
+                        MessageBox.Show("PESEL powinien mieć długość 11 cyfr");
+                        PeselTxb.Focus();
+                    }
+                    newAdmin.Pesel = long.Parse(PeselTxb.Text);
+                    newAdmin.Password = PasswordTbx.Text;
+                    newAdmin.UserName = UserNameTbx.Text;
+                    newAdmin.Sex = (Sex)SexCbox.SelectedItem;
+                    newAdmin.Permission = (Permission)PermissionCbox.SelectedItem;
+                    newAdmin.EmployeeType = EmployeeType.admin;
+                    validator = new Validate();
+                    if (validator.UserNameKeyValidate(newAdmin.UserName, newAdmin.Password, _context))
+                    {
+                        _adminConfiguration = new AdminController();
+                        _adminConfiguration.Add(newAdmin, _context);
+                    }
+                    else
+                    {
+                        string message = "Nazwa użytkownika jest zajęta. Wybierz inną.";
+                        string caption = "Error Detected in Input";
+                        MessageBoxButtons buttons = MessageBoxButtons.OK;
+                        DialogResult result;
+                        UserNameTbx.Focus();
+                        result = MessageBox.Show(message, caption, buttons);
+                    }
+                }
+            }
+        }
+
+        private bool IsNull()
+        {
+            if (NameTbx.Text == "" || PeselTxb.Text == "" || PasswordTbx.Text == "" || UserNameTbx.Text == "")
+            {
+                string message = "Żadne pole nie może być puste!";
+                string caption = "Error Detected in Input";
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+                result = MessageBox.Show(message, caption, buttons);
+                return false;
+            }
+            return true;
         }
     }
 }

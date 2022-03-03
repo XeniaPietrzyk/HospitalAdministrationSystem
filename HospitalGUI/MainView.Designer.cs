@@ -54,14 +54,16 @@ namespace HospitalGUI
             this.NurseGridViewBtn = new System.Windows.Forms.Button();
             this.PhysGridViewBtn = new System.Windows.Forms.Button();
             this.AdminGridViewBtn = new System.Windows.Forms.Button();
+            this.viewPanel = new System.Windows.Forms.Panel();
             this.employeesPnlView1 = new HospitalGUI.UserControls.EmployeesPnlView(_context, _employee);
-
+            this.shiftsPnlView1 = new HospitalGUI.UserControls.ShiftsPnlView(_context);
+            this.shiftsPnlViewEmployees1 = new HospitalGUI.UserControls.ShiftsPnlViewEmployees(_medic, _context);
             this.LeftMenuPnl.SuspendLayout();
             this.UserMenuPnl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.EmployeeGrid)).BeginInit();
+            this.viewPanel.SuspendLayout();
             this.SuspendLayout();
-                       
             // 
             // LeftMenuPnl
             // 
@@ -176,59 +178,49 @@ namespace HospitalGUI
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // employeesPnlView1
+            // Data
             // 
-            this.employeesPnlView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.employeesPnlView1.Location = new System.Drawing.Point(0, 0);
-            this.employeesPnlView1.Name = "employeesPnlView1";
-            this.employeesPnlView1.Size = new System.Drawing.Size(700, 623);
-            this.employeesPnlView1.TabIndex = 1;
-            //// 
-            //// Data
-            //// 
-            //this.Data.Name = "Data";
-            //// 
-            //// Time
-            //// 
-            //this.Time.Name = "Time";
-            //// 
-            //// EmployeeId
-            //// 
-            //this.EmployeeId.Name = "EmployeeId";
-            //// 
-            //// Employee
-            //// 
-            //this.Employee.Name = "Employee";
-            //// 
-            //// EmployeeType
-            //// 
-            //this.EmployeeType.Name = "EmployeeType";
-            //// 
-            //// EmployeeSpec
-            //// 
-            //this.EmployeeSpec.Name = "EmployeeSpec";
-            //// 
-            //// EmployeeGrid
-            //// 
-            //this.EmployeeGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(243)))), ((int)(((byte)(250)))));
-            //this.EmployeeGrid.Dock = System.Windows.Forms.DockStyle.Bottom;
-            //this.EmployeeGrid.Location = new System.Drawing.Point(0, 171);
-            //this.EmployeeGrid.Name = "EmployeeGrid";
-            //this.EmployeeGrid.Size = new System.Drawing.Size(573, 300);
-            //this.EmployeeGrid.TabIndex = 0;
+            this.Data.Name = "Data";
+            // 
+            // Time
+            // 
+            this.Time.Name = "Time";
+            // 
+            // EmployeeId
+            // 
+            this.EmployeeId.Name = "EmployeeId";
+            // 
+            // Employee
+            // 
+            this.Employee.Name = "Employee";
+            // 
+            // EmployeeType
+            // 
+            this.EmployeeType.Name = "EmployeeType";
+            // 
+            // EmployeeSpec
+            // 
+            this.EmployeeSpec.Name = "EmployeeSpec";
+            // 
+            // EmployeeGrid
+            // 
+            this.EmployeeGrid.Location = new System.Drawing.Point(0, 0);
+            this.EmployeeGrid.Name = "EmployeeGrid";
+            this.EmployeeGrid.Size = new System.Drawing.Size(680, 590);
+            this.EmployeeGrid.TabIndex = 0;
             // 
             // NurseGridViewBtn
             // 
             this.NurseGridViewBtn.Location = new System.Drawing.Point(0, 0);
             this.NurseGridViewBtn.Name = "NurseGridViewBtn";
-            this.NurseGridViewBtn.Size = new System.Drawing.Size(75, 23);
+            this.NurseGridViewBtn.Size = new System.Drawing.Size(680, 590);
             this.NurseGridViewBtn.TabIndex = 0;
             // 
             // PhysGridViewBtn
             // 
             this.PhysGridViewBtn.Location = new System.Drawing.Point(0, 0);
             this.PhysGridViewBtn.Name = "PhysGridViewBtn";
-            this.PhysGridViewBtn.Size = new System.Drawing.Size(75, 23);
+            this.PhysGridViewBtn.Size = new System.Drawing.Size(680, 590);
             this.PhysGridViewBtn.TabIndex = 0;
             // 
             // AdminGridViewBtn
@@ -238,13 +230,47 @@ namespace HospitalGUI
             this.AdminGridViewBtn.Size = new System.Drawing.Size(75, 23);
             this.AdminGridViewBtn.TabIndex = 0;
             // 
+            // viewPanel
+            // 
+            this.viewPanel.Controls.Add(this.shiftsPnlViewEmployees1);
+            this.viewPanel.Controls.Add(this.shiftsPnlView1);
+            this.viewPanel.Controls.Add(this.employeesPnlView1);
+            this.viewPanel.Location = new System.Drawing.Point(206, 12);
+            this.viewPanel.Name = "viewPanel";
+            this.viewPanel.Size = new System.Drawing.Size(682, 599);
+            this.viewPanel.TabIndex = 1;
+            // 
+            // employeesPnlView1
+            // 
+            this.employeesPnlView1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
+            this.employeesPnlView1.Location = new System.Drawing.Point(0,0);
+            this.employeesPnlView1.Name = "employeesPnlView1";
+            this.employeesPnlView1.Size = new System.Drawing.Size(682, 599);
+            this.employeesPnlView1.TabIndex = 0;
+            // 
+            // shiftsPnlView1
+            // 
+            this.shiftsPnlView1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
+            this.shiftsPnlView1.Location = new System.Drawing.Point(0, 0);
+            this.shiftsPnlView1.Name = "shiftsPnlView1";
+            this.shiftsPnlView1.Size = new System.Drawing.Size(682, 599);
+            this.shiftsPnlView1.TabIndex = 1;
+            // 
+            // shiftsPnlViewEmployees1
+            // 
+            this.shiftsPnlViewEmployees1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
+            this.shiftsPnlViewEmployees1.Location = new System.Drawing.Point(0, 0);
+            this.shiftsPnlViewEmployees1.Name = "shiftsPnlViewEmployees1";
+            this.shiftsPnlViewEmployees1.Size = new System.Drawing.Size(682, 599);
+            this.shiftsPnlViewEmployees1.TabIndex = 2;
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(900, 623);
-            this.Controls.Add(this.employeesPnlView1);
+            this.Controls.Add(this.viewPanel);
             this.Controls.Add(this.LeftMenuPnl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MainView";
@@ -254,6 +280,7 @@ namespace HospitalGUI
             this.UserMenuPnl.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.EmployeeGrid)).EndInit();
+            this.viewPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -279,38 +306,7 @@ namespace HospitalGUI
             this.NavEmplBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.NavEmplBtn.UseVisualStyleBackColor = true;
             this.NavEmplBtn.Click += new System.EventHandler(this.NavEmplBtn_Click);
-        }
-
-        //private void InitializeShiftsGrid()
-        //{
-        //    // 
-        //    // ShiftsGrid
-        //    // 
-        //    this.ShiftsGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(252)))), ((int)(((byte)(255)))));
-        //    this.ShiftsGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
-        //    this.ShiftsGrid.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(243)))), ((int)(((byte)(250)))));
-        //    this.ShiftsGrid.Location = new System.Drawing.Point(208, 12);
-        //    this.ShiftsGrid.Name = "ShiftsGrid";
-        //    this.ShiftsGrid.RowTemplate.Height = 25;
-        //    this.ShiftsGrid.Size = new System.Drawing.Size(670, 600);
-        //    this.ShiftsGrid.TabIndex = 1;
-        //    //TODO: rozszerzyc source o pracownikow
-        //    //powinno byc zbindowane pracownik + shift
-        //    this.ShiftsGrid.DataSource = GetAllShifts();
-        //}
-
-        private void InitializeEmployeeView()
-        {
-            this.employeesPnlView1 = new HospitalGUI.UserControls.EmployeesPnlView(_context, _employee);
-
-            // 
-            // employeesPnlView1
-            // 
-            this.employeesPnlView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.employeesPnlView1.Location = new System.Drawing.Point(0, 0);
-            this.employeesPnlView1.Name = "employeesPnlView1";
-            this.employeesPnlView1.Size = new System.Drawing.Size(700, 623);
-            this.employeesPnlView1.TabIndex = 1;
+          
         }
         #endregion
 
@@ -333,6 +329,9 @@ namespace HospitalGUI
         private System.Windows.Forms.Button NurseGridViewBtn;
         private System.Windows.Forms.Button PhysGridViewBtn;
         private System.Windows.Forms.Button AdminGridViewBtn;
+        private Panel viewPanel;
+        private UserControls.ShiftsPnlViewEmployees shiftsPnlViewEmployees1;
+        private UserControls.ShiftsPnlView shiftsPnlView1;
         private UserControls.EmployeesPnlView employeesPnlView1;
     }
 }

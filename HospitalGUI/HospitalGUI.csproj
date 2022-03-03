@@ -25,6 +25,9 @@
     <Compile Update="UserControls\AddPhysicianPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="UserControls\ShiftsPnlViewEmployees.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

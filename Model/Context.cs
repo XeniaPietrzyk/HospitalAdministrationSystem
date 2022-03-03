@@ -1,5 +1,4 @@
-﻿using Model.Helpers;
-using Model.Model;
+﻿using Model.Model;
 using Model.XML;
 using System;
 using System.Collections.Generic;
@@ -14,7 +13,8 @@ namespace Model
             Admins = new List<Admin>();
             Nurses = new List<Nurse>();
             Physicians = new List<Physician>();
-            Shifts = new List<List<Shift>>();
+            Duties = new List<Duty>();
+            AllShifts = new List<Shift>();
             LoginPassword = new Dictionary<string, string>();
         }
 
@@ -22,27 +22,18 @@ namespace Model
         public List<Admin> Admins { get; set; }
         public List<Nurse> Nurses { get; set; }
         public List<Physician> Physicians { get; set; }
-        public List<List<Shift>> Shifts { get; set; }
+        //lista dyzurowm ktora posiada liste zmian (List<Shift>) pracownikow
+        public List<Duty> Duties { get; set; }
+        //lista wszystkich istniejacych zmian wszystkich pracownikow
+        public List<Shift> AllShifts { get; set; }
         public Dictionary<string, string> LoginPassword { get; set; }
 
         public void Configure()
         {
             try
             {
-                Admins.Add(new Admin { Id = 0, Name = "John Doe", Pesel = 12345678910, Permission = Helpers.Permission.admin, UserName = "admin", Password = "admin", Sex = Helpers.Sex.male });
-
-                List<Shift> nurseShift = new List<Shift>();
-                nurseShift.Add(new Shift() { Id = 1, ShiftDate = DateTime.Now });
-                Shifts.Add(nurseShift);
-                Nurses.Add(new Nurse { Id = 1, Name = "Misery Chastein", Pesel = 98765432198, Permission = Helpers.Permission.employee, UserName = "nurse", Password = "nurse", Sex = Helpers.Sex.female, Shift = nurseShift });
-
-                List<Shift> nurse2Shifts = new List<Shift>();
-                Shift florenceShift = new Shift() { Id = 1, ShiftDate = DateTime.Now };
-                Nurse Florence = new Nurse { Id = 2, Name = "Florence Nightingale", Pesel = 98765432198, Permission = Helpers.Permission.employee, UserName = "nurse2", Password = "nurse2", Sex = Helpers.Sex.male, Shift = nurse2Shifts };
-                Nurses.Add(Florence);
-                nurse2Shifts.Add(florenceShift);
-                Shifts.Add(nurse2Shifts);
-
+                //domyslny admin programu
+                Admins.Add(new Admin { Id = 0, Name = "John Doe", Pesel = 12345678910, Permission = Helpers.Permission.admin, UserName = "admin", Password = "admin", Sex = Helpers.Sex.male, EmployeeType = Helpers.EmployeeType.admin });
                 ReadDataBase();
                 SetLoginDictionary();
             }
@@ -59,6 +50,8 @@ namespace Model
                 Admins = _xmlserializer.Xml2Object<Admin>(Admins, "admins");
                 Nurses = _xmlserializer.Xml2Object<Nurse>(Nurses, "nurses");
                 Physicians = _xmlserializer.Xml2Object<Physician>(Physicians, "physicians");
+                Duties = _xmlserializer.Xml2Object<Duty>(Duties, "duties");
+                AllShifts = _xmlserializer.Xml2Object<Shift>(AllShifts, "shifts");
             }
             catch (Exception)
             {
@@ -73,6 +66,8 @@ namespace Model
                 var adminSave = _xmlserializer.Object2Xml<Admin>(Admins, "admins");
                 var nurseSave = _xmlserializer.Object2Xml<Nurse>(Nurses, "nurses");
                 var physiciansSave = _xmlserializer.Object2Xml<Physician>(Physicians, "physicians");
+                var dutySave = _xmlserializer.Object2Xml<Duty>(Duties, "duties");
+                var shiftSave = _xmlserializer.Object2Xml<Shift>(AllShifts, "shifts");
             }
             catch (Exception)
             {

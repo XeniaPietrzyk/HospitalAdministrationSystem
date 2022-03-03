@@ -15,13 +15,11 @@ namespace HospitalGUI
 {
     public partial class MainView : Form
     {
-        private IEmployeeConfiguration<Admin> _adminConfiguration;
-        private IEmployeeConfiguration<Nurse> _nurseConfiguration;
-        private IEmployeeConfiguration<Physician> _physicianConfiguration;
-        private IShiftConfiguration<Medic> _shiftConfiguration;
-
-        //TODO: widok dla admina i widok dla medykow
-        //jebia sie te widoki i nic nie widac
+        private IEmployeeController<Admin> _adminConfiguration;
+        private IEmployeeController<Nurse> _nurseConfiguration;
+        private IEmployeeController<Physician> _physicianConfiguration;
+        private IShiftController<Medic> _shiftConfiguration;
+                
         public MainView(Context context, Employee employee)
         {
             _context = context;
@@ -137,27 +135,27 @@ namespace HospitalGUI
 
         private List<Employee> GetAdminList()
         {
-            _adminConfiguration = new AdminService();
+            _adminConfiguration = new AdminController();
             employeeList = _adminConfiguration.GetAll(_context);
             return employeeList.ToList();
         }
 
         private List<Employee> GetPhysicianList()
         {
-            _physicianConfiguration = new PhysicianService();
+            _physicianConfiguration = new PhysicianController();
             employeeList = _physicianConfiguration.GetAll(_context);
             return employeeList.ToList();
         }
 
         private List<Employee> GetNurseList()
         {
-            _nurseConfiguration = new NurseService();
+            _nurseConfiguration = new NurseController();
             employeeList = _nurseConfiguration.GetAll(_context);
             return employeeList.ToList();
         }
         public List<Shift> GetAllShifts()
         {
-            _shiftConfiguration = new ShiftService();
+            _shiftConfiguration = new ShiftController();
             var allShifts = _shiftConfiguration.GetAll(_context);
             return allShifts.ToList();
         }

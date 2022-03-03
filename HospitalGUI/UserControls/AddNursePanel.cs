@@ -11,7 +11,7 @@ namespace HospitalGUI.UserControls
 {
     public partial class AddNursePanel : UserControl
     {
-        private IEmployeeConfiguration<Nurse> _nurseConfiguration;
+        private IEmployeeController<Nurse> _nurseConfiguration;
 
         private Validate validator;
         private System.Windows.Forms.TextBox PasswordTbx;
@@ -200,7 +200,7 @@ namespace HospitalGUI.UserControls
                     validator = new Validate();
                     if (validator.UserNameKeyValidate(newNurse.UserName, newNurse.Password, _context))
                     {
-                        _nurseConfiguration = new NurseService();
+                        _nurseConfiguration = new NurseController();
                         _nurseConfiguration.Add(newNurse, _context);
                     }
                     else

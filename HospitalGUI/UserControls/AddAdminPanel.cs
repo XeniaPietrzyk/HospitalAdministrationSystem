@@ -11,7 +11,7 @@ namespace HospitalGUI.UserControls
 {
     public partial class AddAdminPanel : UserControl
     {
-        private IEmployeeConfiguration<Admin> _adminConfiguration;
+        private IEmployeeController<Admin> _adminConfiguration;
 
         private Validate validator;
 
@@ -161,7 +161,7 @@ namespace HospitalGUI.UserControls
                     validator = new Validate();
                     if (validator.UserNameKeyValidate(newAdmin.UserName, newAdmin.Password, _context))
                     {
-                        _adminConfiguration = new AdminService();
+                        _adminConfiguration = new AdminController();
                         _adminConfiguration.Add(newAdmin, _context);
                     }
                     else

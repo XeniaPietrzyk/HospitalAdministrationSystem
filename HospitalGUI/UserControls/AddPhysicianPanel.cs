@@ -11,7 +11,7 @@ namespace HospitalGUI.UserControls
 {
     public partial class AddPhysicianPanel : UserControl
     {
-        private IEmployeeConfiguration<Physician> _physicianConfiguration;
+        private IEmployeeController<Physician> _physicianConfiguration;
 
         private Validate validator;
 
@@ -185,7 +185,7 @@ namespace HospitalGUI.UserControls
                     validator = new Validate();
                     if (validator.UserNameKeyValidate(newPhysician.UserName, newPhysician.Password, _context))
                     {
-                        _physicianConfiguration = new PhysicianService();
+                        _physicianConfiguration = new PhysicianController();
                         _physicianConfiguration.Add(newPhysician, _context);
                     }
                     else

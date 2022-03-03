@@ -12,10 +12,10 @@ namespace HospitalGUI.UserControls
 {
     public partial class ShiftsPnlViewEmployees : UserControl
     {
-        private IEmployeeConfiguration<Duty> _dutyConfiguration = new DutyService();
-        private IShiftConfiguration<Medic> _shiftConfiguration = new ShiftService();
-        private IEmployeeConfiguration<Physician> _physicianConfiguration = new PhysicianService();
-        private IEmployeeConfiguration<Nurse> _nurseConfiguration = new NurseService();
+        private IEmployeeController<Duty> _dutyConfiguration = new DutyController();
+        private IShiftController<Medic> _shiftConfiguration = new ShiftController();
+        private IEmployeeController<Physician> _physicianConfiguration = new PhysicianController();
+        private IEmployeeController<Nurse> _nurseConfiguration = new NurseController();
         private Validate validator = new Validate();
 
         public ShiftsPnlViewEmployees()

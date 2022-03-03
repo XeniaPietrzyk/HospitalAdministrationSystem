@@ -11,10 +11,10 @@ namespace HospitalGUI.UserControls
 {
     public partial class EmployeesPnlView : UserControl
     {
-        private IEmployeeConfiguration<Admin> _adminConfiguration;
-        private IEmployeeConfiguration<Nurse> _nurseConfiguration;
-        private IEmployeeConfiguration<Physician> _physicianConfiguration;
-        private IEmployeeConfiguration<Shift> _shiftConfiguration;
+        private IEmployeeController<Admin> _adminConfiguration;
+        private IEmployeeController<Nurse> _nurseConfiguration;
+        private IEmployeeController<Physician> _physicianConfiguration;
+        //private IEmployeeConfiguration<Shift> _shiftConfiguration;
 
         public EmployeesPnlView()
         {
@@ -103,21 +103,21 @@ namespace HospitalGUI.UserControls
 
         private List<Admin> GetAdminList()
         {
-            _adminConfiguration = new AdminService();
+            _adminConfiguration = new AdminController();
             adminsList = _adminConfiguration.GetAll(_context);
             return adminsList.ToList();
         }
 
         private List<Physician> GetPhysicianList()
         {
-            _physicianConfiguration = new PhysicianService();
+            _physicianConfiguration = new PhysicianController();
             physicianList = _physicianConfiguration.GetAll(_context);
             return physicianList.ToList();
         }
 
         private List<Nurse> GetNurseList()
         {
-            _nurseConfiguration = new NurseService();
+            _nurseConfiguration = new NurseController();
             nurseList = _nurseConfiguration.GetAll(_context);
             return nurseList.ToList();
         }

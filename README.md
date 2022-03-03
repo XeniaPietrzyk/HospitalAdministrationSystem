@@ -9,7 +9,7 @@
 
 **Functionalities:**
 - admin: adding/deleting/editing users of three types (medic, nurse, administrator)
-- admin: admin: adding/deleting/editing hospital duties
+- admin: adding/deleting/editing hospital duties
 - admin: view all employees and all employees on duty
 - employee: view all duties and all employees on duties
 - employee: signing up for/unsigning from duty

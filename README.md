@@ -3,6 +3,6 @@
 
 **A simple shift management system for employees in the hospital.**
 
-+ Model - class library.
-+ Control Panel - Findows Forms.
-+ Database - xml files.
++ Model - class library .NET 5.0
++ GUI - Findows Forms
++ DB - XML files

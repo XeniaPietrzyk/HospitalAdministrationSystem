@@ -1,4 +1,4 @@
-# HospitalAdministrationSystem
+# Hospital Administration System
 *student's project*
 
 **A simple shift management system for employees in the hospital.**

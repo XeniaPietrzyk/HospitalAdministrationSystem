@@ -1,0 +1,12 @@
+name: CI
+on:
+ push:
+  branches: [master-pipeline]
+pull_request:
+ branches: 
+  - master-pipeline
+workflow_dispatch:
+
+jobs:
+ build:
+   ...
